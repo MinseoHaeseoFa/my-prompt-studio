@@ -755,8 +755,11 @@
       renderControls();
       renderGallery();
       update();
-      const bar = $(".stylebar");
-      if (bar) bar.scrollIntoView({ behavior: "smooth", block: "start" });
+      /* 스타일을 바꾸면 늘 페이지 맨 위에서 새 스타일을 보여줍니다 — 깊이 스크롤한 상태에서
+         탭을 눌러도 이전 위치에 머물지 않도록 전환 즉시 최상단으로 올립니다.
+         html에 scroll-behavior:smooth가 걸려 있어 behavior를 명시하지 않으면 그 규칙을 따라
+         천천히 미끄러지므로, 이 이동만 'instant'로 고정합니다. */
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
       toast(`${current().name} 스타일로 전환했습니다`);
     });
 
