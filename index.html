@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>나만의 프롬프트 스튜디오 · My Prompt Studio</title>
+<meta name="description" content="에세이 시퀀스(린니) · 수채 여백 산책(HSH) · 일상 다이어리툰(YUNA) 세 스타일의 이미지·영상 프롬프트를 영어·한국어 4종으로 한 화면에서 만드는 프롬프트 스튜디오.">
+<meta name="theme-color" content="#f7f0e4">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23f6efe2'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23241f19' stroke-width='1.6'/%3E%3Ccircle cx='16' cy='16' r='4.5' fill='none' stroke='%23c9776e' stroke-width='1.4'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-style="linni">
+<a class="skip" href="#builder">프롬프트 빌더로 바로 가기</a>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="#top">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="brand-text"><b>My Prompt Studio</b><em>나만의 프롬프트 스튜디오</em></span>
+    </a>
+    <nav class="nav" aria-label="페이지 안내">
+      <a href="#studios">스타일</a>
+      <a href="#presets">상황</a>
+      <a href="#builder">빌더</a>
+      <a href="#gallery">샘플</a>
+    </nav>
+    <a class="lib-btn" href="#library">
+      <span>보관함</span><b id="libCount">0</b>
+    </a>
+  </div>
+</header>
+
+<div class="stylebar">
+  <div class="stylebar-inner">
+    <p class="stylebar-label">스타일</p>
+    <div class="tabs" id="styleTabs" role="tablist" aria-label="스타일 전환"><!-- JS --></div>
+  </div>
+</div>
+
+<main id="top">
+
+  <!-- ================= HERO ================= -->
+  <section class="hero" aria-labelledby="heroTitle">
+    <div class="hero-copy">
+      <p class="eyebrow">3 STYLES · 4 PROMPTS · ONE STUDIO</p>
+      <h1 id="heroTitle">세 가지 손끝을,<br><span class="hand">한 화면에.</span></h1>
+      <p class="lead">
+        종이 위 잉크선의 <b>에세이 시퀀스</b>, 순백 여백에 계절이 내려앉는 <b>수채 산책</b>,
+        크림 배경에 오늘 하루를 얹는 <b>일상 다이어리툰</b>. 상황을 고르면
+        <b>이미지·영상 프롬프트가 영어·한국어 4종</b>으로 동시에 나옵니다.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-ink" href="#builder">지금 프롬프트 만들기</a>
+        <a class="btn btn-ghost" href="#studios">스타일 DNA 보기</a>
+      </div>
+      <ul class="hero-chips" aria-label="요약">
+        <li>스타일 <b>3</b></li>
+        <li>프리셋 <b>20</b></li>
+        <li>동시 출력 <b>4종</b></li>
+        <li>보관함 <b>자동 저장</b></li>
+      </ul>
+    </div>
+    <figure class="hero-art" id="heroArt">
+      <!-- JS: 활성 스타일 대표 이미지 -->
+    </figure>
+  </section>
+
+  <!-- ================= STYLE DNA ================= -->
+  <section class="section" id="studios">
+    <header class="sec-head">
+      <p class="kicker" id="styleKicker">01 / 스타일 DNA</p>
+      <h2 id="styleTitle">린니 · 에세이 시퀀스</h2>
+      <p class="sec-lead" id="styleSummary"></p>
+    </header>
+    <div class="facts" id="styleFacts"><!-- JS --></div>
+    <div class="dna-grid" id="styleDna"><!-- JS --></div>
+  </section>
+
+  <!-- ================= PRESETS ================= -->
+  <section class="section section-tint" id="presets">
+    <header class="sec-head">
+      <p class="kicker">02 / 상황 프리셋</p>
+      <h2>카드를 누르면 <span class="hand">장면이 채워집니다</span></h2>
+      <p class="sec-lead" id="presetLead">
+        지금 고른 스타일에 맞는 상황 카드입니다. 누르면 장면·색·구도가 빌더에 들어가고, 아래 프롬프트 4종이 바로 다시 쓰입니다.
+      </p>
+    </header>
+    <div class="preset-grid" id="presetGrid"><!-- JS --></div>
+  </section>
+
+  <!-- ================= BUILDER ================= -->
+  <section class="section" id="builder">
+    <header class="sec-head">
+      <p class="kicker">03 / 프롬프트 빌더</p>
+      <h2>고르면 <span class="hand">네 개의 글이 됩니다</span></h2>
+      <p class="sec-lead">
+        왼쪽에서 고르시면 오른쪽 <b>이미지(EN·KO)</b>와 <b>영상 모션(EN·KO)</b> 프롬프트가 실시간으로 다시 쓰입니다.
+        복사해서 이미지·영상 생성 도구에 그대로 붙여넣으세요.
+      </p>
+    </header>
+
+    <div class="builder">
+      <form class="controls" id="controlForm" autocomplete="off" onsubmit="return false;">
+        <div id="controlFields"><!-- JS: 활성 스타일 컨트롤 --></div>
+        <div class="controls-foot">
+          <button type="button" class="btn btn-ink" id="randomBtn">✨ 랜덤 영감</button>
+          <button type="button" class="btn btn-ghost" id="resetBtn">이 스타일 초기화</button>
+        </div>
+      </form>
+
+      <aside class="result" aria-live="polite">
+        <div class="result-head">
+          <div class="result-title-wrap">
+            <p class="kicker">프롬프트 4종</p>
+            <h3 id="resultTitle">위로 · 회복 · 5단 시퀀스</h3>
+            <p class="result-sub" id="resultSub"></p>
+          </div>
+          <label class="switch" title="핵심 문장만 남긴 짧은 버전">
+            <input type="checkbox" id="briefMode">
+            <span class="switch-track" aria-hidden="true"></span>
+            <span class="switch-label">간결 모드</span>
+          </label>
+        </div>
+
+        <div class="prompt-grid" id="promptGrid"><!-- JS: 4 cards --></div>
+
+        <div class="result-foot">
+          <button type="button" class="btn btn-ink" id="copyAllBtn">4종 한 번에 복사</button>
+          <button type="button" class="btn btn-ghost" id="saveBtn">보관함에 저장</button>
+          <p class="result-note" id="ratioNote"></p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ================= GALLERY ================= -->
+  <section class="section section-tint" id="gallery">
+    <header class="sec-head">
+      <p class="kicker">04 / 샘플 갤러리</p>
+      <h2 id="galleryTitle">이 스타일로 만든 <span class="hand">결과물</span></h2>
+      <p class="sec-lead" id="galleryLead">
+        같은 규칙과 같은 프롬프트 구조로 만든 예시입니다. 카드를 누르면 그 설정이 빌더에 그대로 올라갑니다.
+      </p>
+    </header>
+    <div class="gallery" id="galleryGrid"><!-- JS --></div>
+  </section>
+
+  <!-- ================= LIBRARY ================= -->
+  <section class="section" id="library">
+    <header class="sec-head">
+      <p class="kicker">05 / 내 프롬프트 보관함</p>
+      <h2>마음에 든 조합은 <span class="hand">여기에</span></h2>
+      <p class="sec-lead">
+        저장한 프롬프트는 이 브라우저에 남습니다. 언제든 불러와 다시 쓰고, <code>.md</code> 파일로 내려받아 보관하세요.
+      </p>
+    </header>
+    <div class="lib-toolbar">
+      <p class="lib-status" id="libStatus">저장된 프롬프트가 없습니다.</p>
+      <div class="lib-actions">
+        <button type="button" class="btn btn-ghost" id="exportBtn">.md 내보내기</button>
+        <button type="button" class="btn btn-ghost danger" id="clearBtn">보관함 비우기</button>
+      </div>
+    </div>
+    <div class="lib-list" id="libList"><!-- JS --></div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-col wide">
+      <p class="footer-brand"><span class="brand-mark small" aria-hidden="true"><i></i><i></i><i></i></span> My Prompt Studio</p>
+      <p class="footer-note">
+        세 스타일의 시각 규칙을 프롬프트로 옮긴 개인용 제작 도구입니다. 원작자의 그림을 복제하지 않고,
+        분석한 규칙으로 새로 생성하도록 안내합니다. 다른 사람의 그림을 그대로 옮기거나 자신의 것처럼 쓰지 마세요.
+      </p>
+    </div>
+    <div class="footer-col">
+      <h4>잘 쓰는 법</h4>
+      <ul>
+        <li>스타일을 고르고 → 상황 카드를 누르고 → 4종을 복사합니다.</li>
+        <li>영상은 <b>모션 프롬프트</b>를, 이미지는 <b>이미지 프롬프트</b>를 씁니다.</li>
+        <li>결과가 어긋나면 <b>간결 모드</b>로 바꿔 다시 시도해 보세요.</li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>새 스타일 추가</h4>
+      <p>
+        <code>data/</code>에 스타일 파일 하나를 만들고 <code>MPS.register({...})</code>로 등록한 뒤,
+        <code>index.html</code>에 <code>&lt;script&gt;</code> 한 줄을 더하면
+        탭·프리셋·빌더·프롬프트가 자동으로 늘어납니다.
+      </p>
+    </div>
+  </div>
+  <p class="copyright">2026-11-22 · 김비서 제작 · 파일 하나로 열리는 정적 웹앱</p>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="data/registry.js"></script>
+<script src="data/linni.js"></script>
+<script src="data/hsh.js"></script>
+<script src="data/yuna.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

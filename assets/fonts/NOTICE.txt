@@ -1,0 +1,8 @@
+이 폴더의 웹폰트는 아래 오픈소스 폰트를 한글 전체 글자(AC00~D7A3)와
+라틴·문장부호까지 남기도록 서브셋(subset)한 뒤 woff2로 변환한 것입니다.
+원본 라이선스는 SIL Open Font License 1.1 이며, 서브셋 파일도 같은 라이선스를 따릅니다.
+
+- gowun-regular.woff2, gowun-bold.woff2 : Gowun Batang (고운바탕) — Copyright (c) Studio Dot By Dot
+- nanum-pen.woff2                      : Nanum Pen Script (나눔손글씨 펜) — Copyright (c) NHN / Naver
+
+SIL Open Font License 1.1: https://scripts.sil.org/OFL
