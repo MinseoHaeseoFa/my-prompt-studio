@@ -112,7 +112,7 @@
   };
 
   const GROUNDS = {
-    leaf: { label: "낙엽 길", en: "a leaf-strewn dirt path, single fallen leaves lying flat along it", ko: "낙엽이 흩어진 흙길, 떨어진 잎이 납작하게 놓인" },
+    leaf: { label: "낙엽 길", en: "a leaf-strewn dirt path, single fallen leaves lying flat along it", ko: "낙엽이 흩어지고 떨어진 잎이 납작하게 놓인 흙길" },
     dirt: { label: "흙길", en: "a plain packed-earth path with a few grass tufts at the edges", ko: "가장자리에 풀 몇 포기만 난 다져진 흙길" },
     snow: { label: "눈길", en: "a soft snow-covered path with faint footprints", ko: "옅은 발자국이 남은 부드러운 눈길" },
     puddle: { label: "물웅덩이", en: "a wet path with one shallow puddle reflecting the sky", ko: "얕은 물웅덩이 하나가 하늘을 비추는 젖은 길" },
@@ -408,7 +408,7 @@
             ? `상단: 완전히 비워 둡니다. 계절은 빛으로만 아주 옅게 암시합니다.`
             : `상단 밴드(위에서 ${tend}%): ${curData.ko}. 젖은 수채(wet-on-wet)로 그려 물이 번진 자국과 불규칙한 경계가 흰 종이로 스며들 듯 사라집니다 — ${curData.washKo} 색. 송이는 길이가 제각각이라 일부는 더 낮게 처지고, 드문드문 흰 틈이 보입니다. 색은 오직 이곳에만 있습니다.`,
           `공기: ${partData.ko} — ${curData.petalKo} 한 장 한 장이 3~12px, 앞뒤 깊이가 달라 어떤 것은 선명하고 어떤 것은 흐릿하며 흰 여백을 천천히 가로질러 내려옵니다. 열 개를 넘지 않습니다.`,
-          `하단: 화면 높이 약 88% 지점에 가는 손그림 수평선 하나, 그 위에 ${groundData.ko} 길. 그 선 위에 ${castData.ko}(화면 높이의 ${castData.height === "about 20% of the canvas height" ? "약 20%" : castData.height === "about 30% of the canvas height" ? "약 30%" : "약 20%"}), ${compData.ko ? compData.ko + ", " : ""}비스듬한 각도로 서 있습니다. ${ctx.scene("ko")}.`,
+          `하단: 화면 높이 약 88% 지점에 가는 손그림 수평선 하나, 그 위에 ${groundData.ko}. 그 선 위에 ${castData.ko}(화면 높이의 ${castData.height === "about 20% of the canvas height" ? "약 20%" : castData.height === "about 30% of the canvas height" ? "약 30%" : "약 20%"}), ${compData.ko ? compData.ko + ", " : ""}비스듬한 각도로 서 있습니다. ${ctx.scene("ko")}.`,
           `인물 묘사: 검은 잉크 선화만 — 0.5~0.8px, 압력이 조금씩 다른 가는 펜선. 머리카락은 흐르는 몇 획, 옷 주름은 아주 옅은 연필 음영으로만. 채색 없음, 면 채우기 없음, 연필보다 굵은 외곽선 없음. 얼굴은 옆선 하나, 눈 한 획, 작은 코, 입꼬리 한 획으로 만듭니다.`,
           `팔레트: 흰 종이, 검은 잉크, 그리고 커튼의 한 가지 수채 색 — ${paletteKo}(${paletteHex}). 인물에는 볼조차 색을 넣지 않습니다.`,
           `빛: ${lightData.ko}. 지면에 진 그림자는 없고, 발이 선 자리에 짧은 그림자 획 두세 개만.`,
@@ -498,7 +498,7 @@ Gait: a genuine 8-phase walk cycle, never a slide — contact, down, passing, up
         const partData = PARTICLES[part.id];
         const isWalk = motion.id === "walk" || motion.id === "turn" || motion.id === "lookup";
 
-        const walkBlock = `전진 트래킹(이 영상의 핵심): 인물은 화면의 같은 자리에 머물고, 지면과 발밑의 풀·자갈이 오른쪽에서 왼쪽으로 흘러갑니다. 지면선, 자갈, 풀 포기, ${groundData.ko}가 9:16 기준 프레임당 8~10px 속도로 미끄러집니다. 카메라에 가까운 풀은 가장 빠르게, 중간의 길과 낙엽은 60%, 먼 지면 표시는 30% 속도로 세 겹을 만들어 깊이를 줍니다. ${cur.id === "none" ? "" : `수채 커튼은 좌우로 2~3px만 흔들리며, 움직이는 지면과 반대로 미세한 시차를 만듭니다.`}
+        const walkBlock = `전진 트래킹(이 영상의 핵심): 인물은 화면의 같은 자리에 머물고, 지면과 발밑의 풀·자갈이 오른쪽에서 왼쪽으로 흘러갑니다. 지면은 ${groundData.ko}입니다. 그 위의 자갈, 풀 포기, 떨어진 잎이 9:16 기준 프레임당 8~10px 속도로 미끄러집니다. 카메라에 가까운 풀은 가장 빠르게, 중간의 길과 낙엽은 60%, 먼 지면 표시는 30% 속도로 세 겹을 만들어 깊이를 줍니다. ${cur.id === "none" ? "" : `수채 커튼은 좌우로 2~3px만 흔들리며, 움직이는 지면과 반대로 미세한 시차를 만듭니다.`}
 
 보행: 미끄러지지 않는 진짜 8동작 걷기 — contact, down, passing, up, 반대발 contact, down, passing, up. 30fps에서 동작당 8~10프레임, 팔은 몸과 반대로 흔들리고 어깨는 3도 회전, 머리는 위아래 2px 이내로만 흔들립니다. 머리카락과 치맛자락은 몸보다 한 프레임 늦게 따라옵니다. 발은 뒤꿈치부터 딛고 발끝이 마지막에 떨어집니다.`;
 

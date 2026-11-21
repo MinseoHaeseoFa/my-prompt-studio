@@ -143,7 +143,7 @@
       id: "commute",
       emoji: "🚇",
       label: "퇴근길, 남은 자리 하나",
-      thumb: "",
+      thumb: "yuna/commute-seat.jpg",
       caption: "오늘도 나는 그 자리를 남에게 양보했다.",
       scene: {
         en: "stands on a subway train holding a strap, one empty seat visible behind them, eyes closed",
@@ -159,7 +159,7 @@
       id: "monday",
       emoji: "😵",
       label: "월요일 아침의 나",
-      thumb: "",
+      thumb: "yuna/monday-bed.jpg",
       caption: "월요일 아침엔 나도 나를 잘 모르겠다.",
       scene: {
         en: "sits up in bed with hair sticking out in two strands, eyes half-open, one sock on",
