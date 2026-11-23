@@ -210,7 +210,7 @@ code { font-family: var(--mono); font-size: .88em; background: rgba(36, 31, 25, 
   border-bottom: 1px solid var(--line);
 }
 .stylebar-inner {
-  max-width: var(--wrap); margin: 0 auto; padding: 10px 24px;
+  max-width: 1300px; margin: 0 auto; padding: 10px 24px;
   display: flex; align-items: center; gap: 14px;
 }
 .stylebar-label {
