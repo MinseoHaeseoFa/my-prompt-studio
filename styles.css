@@ -240,6 +240,8 @@ code { font-family: var(--mono); font-size: .88em; background: rgba(36, 31, 25, 
 .tab-text { display: flex; flex-direction: column; line-height: 1.2; text-align: left; }
 .tab-text b { font-size: 13.5px; font-weight: 600; }
 .tab-text em { font-style: normal; font-size: 10.5px; color: var(--ink-faint); letter-spacing: .03em; }
+/* 선택된 탭만 부제를 펼쳐, 스타일이 늘어나도 PC 폭에서 7개가 한눈에 들어오게 합니다 */
+.tab:not([aria-selected="true"]) .tab-text em { display: none; }
 
 /* ============================================================
    HERO
