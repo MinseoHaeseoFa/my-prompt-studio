@@ -206,9 +206,21 @@
   };
 
   const AIRS = {
-    many: { label: "많이 흩날림", en: "twenty to thirty leaves drifting down through the frame at different depths", ko: "앞뒤 깊이를 달리한 스무에서 서른 장의 잎이 화면을 가로질러 내려옵니다" },
-    some: { label: "조금 흩날림", en: "six to ten leaves drifting down, now and then", ko: "여섯에서 열 장의 잎이 이따금 내려옵니다" },
-    none: { label: "떨어지는 것 없음", en: "completely still air, nothing falling", ko: "아무것도 떨어지지 않는 정지된 공기" }
+    many: {
+      label: "많이 흩날림",
+      en: "a steady fall of twenty to thirty {} through the frame at different depths",
+      ko: "스무에서 서른 개의 {}: 앞뒤 깊이를 달리해 화면을 가로질러 내려옵니다"
+    },
+    some: {
+      label: "조금 흩날림",
+      en: "six to ten {} drifting down, now and then",
+      ko: "여섯에서 열 개의 {}: 이따금 화면을 가로질러 내려옵니다"
+    },
+    none: {
+      label: "떨어지는 것 없음",
+      en: "completely still air, nothing falling",
+      ko: "아무것도 떨어지지 않는 정지된 공기"
+    }
   };
 
   const LIGHTS = {
@@ -218,6 +230,9 @@
     overcast: { label: "흐린 날", en: "flat overcast light, no tint at all, the paper reading as slightly grey cream", ko: "평평한 흐린 빛, 색 기운 없이 종이가 조금 회끼 도는 크림색으로 읽힙니다" },
     snowlight: { label: "눈 내리는 빛", en: "snow light; the paper cools to pale blue-grey and everything goes quiet", ko: "눈 내리는 날의 빛. 종이가 옅은 청회색으로 식고 모든 것이 조용해집니다" }
   };
+
+  /* 낙하 입자 문구의 {} 자리에 그 계절의 잎 이름을 넣습니다 */
+  const fillAir = (tpl, word) => tpl.replace("{}", word);
 
   /* ---------- 프리셋 ---------- */
   const PRESETS = [
@@ -433,7 +448,7 @@
           `Figures: ${fig.en}. They are small — 12 to 18% of the frame height — and drawn with exactly the same hairline ink as the architecture: a profile line, one dot or short stroke for the eye, no facial features, no shading. Their clothes carry one flat, muted colour each (navy, olive, charcoal, camel, dusty rose); skin and hair stay uncoloured, and the dog is white line art only.`,
           `Line: one uniform stroke, 0.6–0.9 px at this scale, in near-black ink (#20201E), with no taper, no pressure change, no double strokes, no scribble. All curves are smooth and deliberate; every repeated element (wall blocks, roof tiles, railing bars, window frames) is drawn with the same measurement, the way a drafting pen would draw them.`,
           `Colour: only two things are coloured — the foliage (${fol.toneEn}) and the tiny clothes. Everything else stays empty ivory and black line. Fills are flat and opaque; no watercolour bleed, no gradient, no highlight, no shadow, no cast shadow on the ground.`,
-          `Air: ${air.en}, each leaf drawn as a single clean shape in its own colour, some sharp and some small, never overlapping into a blur.`,
+          `Air: ${fillAir(air.en, fol.leafPl)}, each ${fol.leafEn} drawn as a single clean shape in its own colour, some sharp and some small, never overlapping into a blur.`,
           `Light: ${light.en}.`,
           `Scene direction: ${H.cap(H.stripDot(sceneEn))}.`,
           `Mood: hushed and gently nostalgic, like a page from a thin picture book about walking home in the last good week of a season. Nothing dramatic, nothing busy.`,
@@ -480,7 +495,7 @@
           `인물: ${fig.ko}. 화면 높이의 12~18%로 작게, 건물과 똑같은 먹선으로 그립니다. 옆선 하나와 눈을 나타내는 점 하나 또는 짧은 획이 전부이고, 코·입·눈썹은 없습니다. 옷에만 무채색 또는 저채도 한 색(네이비·올리브·차콜·카멜·더스티 로즈)을 플랫하게 넣고, 피부와 머리는 채색하지 않습니다. 강아지는 흰 선화로만.`,
           `선: 한 가지 굵기 0.6~0.9px, 거의 검정인 먹색(#20201E). 끝이 가늘어지지 않고, 필압 변화도, 겹쳐 그은 선도, 낙서 같은 선도 없습니다. 모든 곡선은 매끄럽고 의도적이며, 반복되는 요소(담장 돌, 기와, 난간 살, 창틀)는 제도펜으로 그린 것처럼 같은 치수로 그립니다.`,
           `색: 색이 있는 것은 두 가지뿐입니다 — 잎(${fol.toneKo})과 인물의 작은 옷. 나머지는 모두 아이보리 여백과 검은 선으로 남깁니다. 채색은 플랫하고 불투명하며, 수채 번짐·그라데이션·하이라이트·그림자·바닥에 드리운 그림자 모두 없습니다.`,
-          `공기: ${air.ko}. 잎 하나하나를 깨끗한 모양 하나로 그리고, 어떤 것은 선명하고 어떤 것은 작게, 뭉개져 흐려지지 않게.`,
+          `공기: ${fillAir(air.ko, fol.leafKo)}. ${fol.leafKo} 하나하나를 깨끗한 모양 하나로 그리고, 어떤 것은 선명하고 어떤 것은 작게, 뭉개져 흐려지지 않게.`,
           `빛: ${light.ko}.`,
           `장면 지시: ${H.stripDot(sceneKo)}.`,
           `분위기: 숨을 죽인 듯 조용하고 조금은 그리운 — 한 계절의 마지막 좋은 주에 집으로 걸어가는 얇은 그림책 한 페이지 같은 느낌. 극적인 것도, 번잡한 것도 없습니다.`,
@@ -497,7 +512,8 @@
         const air = AIRS[ctx.get("air").id];
         const ratio = ctx.get("ratio");
         const canopy = ctx.get("foliage").id === "bare" || ctx.get("foliage").id === "snow";
-        const moves = motion.id === "walk" || motion.id === "look";
+        const hasFigures = ctx.get("figures").id !== "none";
+        const moves = hasFigures && (motion.id === "walk" || motion.id === "look");
 
         const walkBlock = `Walk cycle: a real eight-phase cycle — contact, down, passing, up, then contact on the other foot. Each heel plants and holds for two frames before the weight rolls forward, the toe peels off last, and the up-and-down of the body is no more than 2 px. Arms counter-swing, the coat hem and hair lag one frame behind, and the feet never slide: the planted foot is locked to the ground for the whole stance. The small dog trots with a four-beat gait, two beats behind the walker's feet, its tail lifted and its paws touching down cleanly.`;
 
@@ -509,8 +525,8 @@
           return [
             `${ratio.en}, 24-second seamless loop, 24 fps, locked camera: the same ivory-paper hairline landscape, animated in 2D only.`,
             canopy
-              ? `The bare crowns sway 1–2 px on a slow cycle and a few flakes drift down; ${air.en}.`
-              : `The ${fol.leafPl} shiver in place (1–2 px, standing wave running from trunk to tip) and single ${fol.leafPl} are released and fall the full height of the frame, each with its own drift and slow spin; ${air.en}.`,
+              ? `The bare crowns sway 1–2 px on a slow cycle. ${H.cap(fillAir(air.en, fol.leafPl))}.`
+              : `The ${fol.leafPl} shiver in place (1–2 px, standing wave running from trunk to tip) and single ${fol.leafPl} are released and fall the full height of the frame, each with its own drift and slow spin; ${fillAir(air.en, fol.leafPl)}.`,
             moves
               ? `Figures: ${fig.en} — real eight-phase walk, heel plants and holds, feet never slide, body bob ≤2 px, dog trots two beats behind.`
               : `No walkers: the figures stay almost still, breathing only.`,
@@ -523,12 +539,12 @@
           `Animate the still hairline illustration into a 24-second seamless loop at 24 fps — flat 2D line art on ivory paper, moving only as much as a sheet of paper and a light breeze would allow.`,
           `Camera: completely locked. No pan, no tilt, no zoom, no push-in, no parallax, no handheld shake, no rack focus, no morphing, no cross-dissolve. The frame keeps exactly the same size, crop and position from the first second to the last.`,
           `Canopy: ${canopy ? fol.en + ". " : fol.en + ", " + fol.toneEn + ". "}The crown sways as one soft mass — 1–2 px of lateral drift with a wave that travels slowly from the trunk out to the tips, about one full sway every eight seconds — while individual ${fol.leafPl} shiver by about 1 px on their own, slightly out of phase. No leaf shape changes and no cluster reshapes.`,
-          `Falling: ${air.en}. Each one starts at a different height, drifts sideways with a slow lateral wobble, turns at no more than 30 degrees per second, and lands or leaves the frame without a bounce. The density stays higher at the top of the frame and thins toward the ground.`,
+          `Falling: ${fillAir(air.en, fol.leafPl)}. Each one starts at a different height, drifts sideways with a slow lateral wobble, turns at no more than 30 degrees per second, and lands or leaves the frame without a bounce. The density stays higher at the top of the frame and thins toward the ground.`,
           moves ? walkBlock : stillBlock,
-          motion.id === "look" ? lookBlock : "",
+          motion.id === "look" && hasFigures ? lookBlock : "",
           `Architecture and ground: ${place.en} — ${place.propEn} — stay perfectly still, with no shimmer and no line boil beyond half a pixel. The ink lines may breathe by a fraction of a pixel, like a drawing held in the hand, which is the only sign of the hand behind it.`,
           `Colour: the foliage and the tiny clothing colours never flicker, brighten or shift hue. The ivory paper (#FBF6EA) holds exactly the same value in every frame, like a sheet lying on a table.`,
-          `Loop: the action is built so that twenty complete gait cycles and a whole number of leaf drifts fit inside 24 seconds; the last frame is identical to the first, so the cut is invisible. No fade, no title card, no logo, no sound.`,
+          `Loop: the action is built so that ${moves ? "twenty complete gait cycles and " : ""}a whole number of leaf drifts fit inside 24 seconds; the last frame is identical to the first, so the cut is invisible. No fade, no title card, no logo, no sound.`,
           `Guardrails: keep it flat and matte; no 3D, no lighting change, no shadows moving, no motion blur, no speed ramps, no scene change, no new characters, no added text.`
         ].filter(Boolean).join("\n\n");
       },
@@ -541,7 +557,8 @@
         const air = AIRS[ctx.get("air").id];
         const ratio = ctx.get("ratio");
         const canopy = ctx.get("foliage").id === "bare" || ctx.get("foliage").id === "snow";
-        const moves = motion.id === "walk" || motion.id === "look";
+        const hasFigures = ctx.get("figures").id !== "none";
+        const moves = hasFigures && (motion.id === "walk" || motion.id === "look");
 
         const walkBlock = `보행: 진짜 8동작 사이클 — contact, down, passing, up, 그리고 반대발 contact. 뒤꿈치가 땅에 닿으면 두 프레임을 그대로 붙어 있다가 무게가 앞으로 넘어가고, 발끝이 마지막에 떨어집니다. 몸의 상하 흔들림은 2px을 넘지 않고, 팔은 반대로 흔들리며, 코트 자락과 머리카락은 한 프레임 늦게 따라옵니다. 발은 절대 미끄러지지 않습니다 — 디딘 발은 딛는 동안 땅에 고정됩니다. 작은 강아지는 네 박자 걸음으로 사람 발보다 두 박자 뒤에서 걷고, 꼬리는 세운 채 발바닥이 또렷하게 닿습니다.`;
 
@@ -553,8 +570,8 @@
           return [
             `${ratio.ko}, 24초 무한 반복, 24fps, 카메라 완전 고정: 같은 아이보리 종이 먹선 풍경을 2D로만 움직입니다.`,
             canopy
-              ? `앙상한 가지가 느린 주기로 1~2px 흔들리고 ${fol.leafKo}이 조금 내려옵니다. ${air.ko}.`
-              : `${fol.leafKo}이 제자리에서 1~2px 떨리고(줄기에서 끝으로 흐르는 파동), 한 장씩 떨어져 화면 끝까지 내려오며 각자 옆으로 흔들리며 천천히 돕니다. ${air.ko}.`,
+              ? `앙상한 가지가 느린 주기로 1~2px 흔들립니다. ${fillAir(air.ko, fol.leafKo)}.`
+              : `${fol.leafKo}이 제자리에서 1~2px 떨리고(줄기에서 끝으로 흐르는 파동), 한 장씩 떨어져 화면 끝까지 내려오며 각자 옆으로 흔들리며 천천히 돕니다. ${fillAir(air.ko, fol.leafKo)}.`,
             moves
               ? `인물: ${fig.short} — 진짜 8동작 보행, 뒤꿈치가 딛고 버티며 발이 미끄러지지 않음, 몸 흔들림 2px 이내, 강아지는 두 박자 뒤에서 종종걸음.`
               : `지나가는 사람 없이 인물은 거의 정지, 숨만.`,
@@ -567,12 +584,12 @@
           `정지 라인 아트 일러스트를 24초 무한 반복 영상으로 만듭니다. 24fps, 아이보리 종이 위 평면 2D 선화이며, 종이 한 장과 약한 바람이 허락하는 만큼만 움직입니다.`,
           `카메라: 완전 고정. 팬·틸트·줌·푸시인·시차 이동·핸드헬드 흔들림·포커스 이동·모핑·디졸브 모두 없음. 첫 초와 마지막 초의 화면 크기·구도·위치가 정확히 같습니다.`,
           `수관: ${canopy ? fol.ko + ". " : fol.ko + ", " + fol.toneKo + " 색. "}수관 전체가 하나의 부드러운 덩어리로 흔들립니다 — 좌우 1~2px, 줄기에서 끝으로 천천히 흐르는 파동이 약 8초에 한 번. 그 위에서 잎 하나하나가 서로 조금씩 어긋난 위상으로 1px씩 떨립니다. 잎 모양이 바뀌거나 무리 자체가 변형되지는 않습니다.`,
-          `낙하: ${air.ko}. 잎마다 시작 높이가 다르고, 옆으로 느리게 흔들리며, 회전은 초당 30도를 넘지 않고, 튀지 않은 채 바닥에 닿거나 화면 밖으로 나갑니다. 밀도는 화면 위쪽이 높고 아래로 갈수록 성깁니다.`,
+          `낙하: ${fillAir(air.ko, fol.leafKo)}. 각각 시작 높이가 다르고, 옆으로 느리게 흔들리며, 회전은 초당 30도를 넘지 않고, 튀지 않은 채 바닥에 닿거나 화면 밖으로 나갑니다. 밀도는 화면 위쪽이 높고 아래로 갈수록 성깁니다.`,
           moves ? walkBlock : stillBlock,
-          motion.id === "look" ? lookBlock : "",
+          motion.id === "look" && hasFigures ? lookBlock : "",
           `구조물과 바닥: ${place.ko} — ${place.propKo2} — 은 완전히 정지해 있고, 반 픽셀을 넘는 선 떨림이나 일렁임은 없습니다. 다만 손에 든 그림처럼 선이 아주 미세하게 숨 쉬는 정도는 허용합니다.`,
           `색: 잎과 인물의 작은 옷 색은 깜빡이거나 밝아지거나 색상이 변하지 않습니다. 아이보리 종이(#FBF6EA)는 탁자 위에 놓인 종이처럼 모든 프레임에서 정확히 같은 밝기를 유지합니다.`,
-          `루프: 24초 안에 보행 사이클 20회와 정수 개의 낙하 주기가 들어가도록 구성해, 마지막 프레임이 첫 프레임과 완전히 같습니다. 끊김이 보이지 않으며 페이드·타이틀 카드·로고·소리는 없습니다.`,
+          `루프: 24초 안에 ${moves ? "보행 사이클 20회와 " : ""}정수 개의 낙하 주기와 수관 흔들림 주기가 들어가도록 구성해, 마지막 프레임이 첫 프레임과 완전히 같습니다. 끊김이 보이지 않으며 페이드·타이틀 카드·로고·소리는 없습니다.`,
           `가드레일: 평면과 무광 유지. 3D·조명 변화·그림자 이동·모션 블러·속도 램프·장면 전환·새 인물·글자 추가는 모두 금지합니다.`
         ].filter(Boolean).join("\n\n");
       }
