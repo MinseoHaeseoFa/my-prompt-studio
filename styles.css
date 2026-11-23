@@ -1,6 +1,6 @@
 /* ============================================================
    My Prompt Studio · styles.css
-   종이 · 잉크 유산 + 네 스타일을 넘나드는 스튜디오 UI
+   종이 · 잉크 유산 + 여러 스타일을 넘나드는 스튜디오 UI
    PC(1440) / 태블릿 / 모바일(390) 반응형 · file:// 대응
    ============================================================ */
 
@@ -76,6 +76,30 @@ body[data-style="zen"] {
   --accent-deep: #8f6108;
   --shot-ratio: 3 / 4;
   --thumb-ratio: 3 / 4;
+  --hero-ratio: 4 / 5;
+}
+body[data-style="mini"] {
+  --accent: #8d6244;
+  --accent-soft: #f0e3d3;
+  --accent-deep: #6b452c;
+  --shot-ratio: 4 / 5;
+  --thumb-ratio: 4 / 5;
+  --hero-ratio: 4 / 5;
+}
+body[data-style="wash"] {
+  --accent: #5d7f87;
+  --accent-soft: #e4ecec;
+  --accent-deep: #43636b;
+  --shot-ratio: 4 / 5;
+  --thumb-ratio: 4 / 5;
+  --hero-ratio: 4 / 5;
+}
+body[data-style="poster"] {
+  --accent: #3f5d93;
+  --accent-soft: #e6eaf4;
+  --accent-deep: #2f4772;
+  --shot-ratio: 4 / 5;
+  --thumb-ratio: 4 / 5;
   --hero-ratio: 4 / 5;
 }
 
@@ -193,7 +217,7 @@ code { font-family: var(--mono); font-size: .88em; background: rgba(36, 31, 25, 
   margin: 0; font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
   color: var(--ink-faint); flex: none; font-weight: 600;
 }
-.tabs { display: flex; gap: 8px; overflow-x: auto; padding: 2px; scrollbar-width: none; }
+.tabs { display: flex; gap: 8px; overflow-x: auto; padding: 2px; scrollbar-width: none; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch; }
 .tabs::-webkit-scrollbar { display: none; }
 .tab {
   display: inline-flex; align-items: center; gap: 9px;

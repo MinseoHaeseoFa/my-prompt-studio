@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>나만의 프롬프트 스튜디오 · My Prompt Studio</title>
-<meta name="description" content="에세이 시퀀스(린니) · 수채 여백 산책(HSH) · 일상 다이어리툰(YUNA) · 라인 아트 풍경(ZEN) 네 스타일의 이미지·영상 프롬프트를 영어·한국어 4종으로 한 화면에서 만드는 프롬프트 스튜디오.">
+<meta name="description" content="에세이 시퀀스·수채 여백 산책·일상 다이어리툰·라인 아트 풍경·미니어처 피규어·수채 초상·도시 포스터까지, 아카이브에서 화풍을 골라 상황만 넣으면 이미지·영상 프롬프트를 영어·한국어 4종으로 한 화면에서 만드는 프롬프트 스튜디오.">
 <meta name="theme-color" content="#f7f0e4">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23f6efe2'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23241f19' stroke-width='1.6'/%3E%3Ccircle cx='16' cy='16' r='4.5' fill='none' stroke='%23c9776e' stroke-width='1.4'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="styles.css">
@@ -43,20 +43,20 @@
   <!-- ================= HERO ================= -->
   <section class="hero" aria-labelledby="heroTitle">
     <div class="hero-copy">
-      <p class="eyebrow">4 STYLES · 4 PROMPTS · ONE STUDIO</p>
-      <h1 id="heroTitle">네 가지 손끝을,<br><span class="hand">한 화면에.</span></h1>
+      <p class="eyebrow">CURATED STYLES · 4 PROMPTS · ONE STUDIO</p>
+      <h1 id="heroTitle">마음에 남는 화풍을,<br><span class="hand">한 스튜디오에.</span></h1>
       <p class="lead">
-        종이 위 잉크선의 <b>에세이 시퀀스</b>, 순백 여백에 계절이 내려앉는 <b>수채 산책</b>,
-        크림 배경에 오늘 하루를 얹는 <b>일상 다이어리툰</b>, 가는 먹선 위에 계절만 색으로 얹는 <b>라인 아트 풍경</b>.
-        상황을 고르면 <b>이미지·영상 프롬프트가 영어·한국어 4종</b>으로 동시에 나옵니다.
+        손끝마다 다른 결의 그림체를 한곳에 모았습니다. 종이 위 잉크선부터 점토 인형의 매크로 사진,
+        젖은 수채의 초상, 도시를 한 장에 담는 펜 포스터까지 — 마음에 드는 스타일을 고르고 상황만 적으면
+        <b>이미지·영상 프롬프트가 영어·한국어 4종</b>으로 동시에 나옵니다.
       </p>
       <div class="hero-actions">
         <a class="btn btn-ink" href="#builder">지금 프롬프트 만들기</a>
         <a class="btn btn-ghost" href="#studios">스타일 DNA 보기</a>
       </div>
       <ul class="hero-chips" aria-label="요약">
-        <li>스타일 <b>4</b></li>
-        <li>프리셋 <b>26</b></li>
+        <li>스타일 <b id="statStyles">–</b></li>
+        <li>프리셋 <b id="statPresets">–</b></li>
         <li>동시 출력 <b>4종</b></li>
         <li>보관함 <b>자동 저장</b></li>
       </ul>
@@ -172,7 +172,7 @@
     <div class="footer-col wide">
       <p class="footer-brand"><span class="brand-mark small" aria-hidden="true"><i></i><i></i><i></i></span> My Prompt Studio</p>
       <p class="footer-note">
-        네 스타일의 시각 규칙을 프롬프트로 옮긴 개인용 제작 도구입니다. 원작자의 그림을 복제하지 않고,
+        아카이브에 담긴 화풍의 시각 규칙을 프롬프트로 옮긴 개인용 제작 도구입니다. 원작자의 그림을 복제하지 않고,
         분석한 규칙으로 새로 생성하도록 안내합니다. 다른 사람의 그림을 그대로 옮기거나 자신의 것처럼 쓰지 마세요.
       </p>
     </div>
@@ -203,6 +203,9 @@
 <script src="data/hsh.js"></script>
 <script src="data/yuna.js"></script>
 <script src="data/zen.js"></script>
+<script src="data/mini.js"></script>
+<script src="data/wash.js"></script>
+<script src="data/poster.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

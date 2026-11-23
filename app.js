@@ -126,6 +126,26 @@
     ).join("");
   }
 
+  /* ---------------- render: hero stats (스타일 수·프리셋 수 자동 계산) ---------------- */
+  function renderHeroStats() {
+    const styleCount = STYLES.length;
+    const presetCount = STYLES.reduce((n, s) => n + ((s.presets && s.presets.length) || 0), 0);
+    const sEl = $("#statStyles");
+    const pEl = $("#statPresets");
+    if (sEl) sEl.textContent = String(styleCount);
+    if (pEl) pEl.textContent = String(presetCount);
+  }
+
+  /* 활성 탭이 모바일 스트립에서 잘리지 않게 가로 스크롤만 가운데로 맞춥니다 */
+  function centerActiveTab() {
+    const box = $("#styleTabs");
+    if (!box) return;
+    const tab = box.querySelector(`[data-style="${currentId}"]`);
+    if (!tab) return;
+    const left = tab.offsetLeft - (box.clientWidth - tab.offsetWidth) / 2;
+    box.scrollTo({ left: Math.max(0, left), behavior: "smooth" });
+  }
+
   /* ---------------- render: style intro ---------------- */
   function renderStyleIntro() {
     const style = current();
@@ -199,9 +219,10 @@
   /* ---------------- render: controls ---------------- */
   function renderControl(style, ss, spec) {
     if (spec.type === "text") {
+      const textVal = spec.key === "scene" ? ss.scene : spec.key === "caption" ? ss.caption : ss.c[spec.key] || "";
       return `<label class="field">
         <span class="f-label">${esc(spec.label)}</span>
-        <input type="text" data-text="${spec.key}" value="${esc(ss[spec.key] || "")}" placeholder="${esc(spec.placeholder || "")}" maxlength="120">
+        <input type="text" data-text="${spec.key}" value="${esc(textVal)}" placeholder="${esc(spec.placeholder || "")}" maxlength="120">
         ${spec.hint ? `<span class="f-hint">${esc(spec.hint)}</span>` : ""}
       </label>`;
     }
@@ -769,6 +790,7 @@
       renderControls();
       renderGallery();
       update();
+      centerActiveTab();
       /* 스타일을 바꾸면 늘 페이지 맨 위에서 새 스타일을 보여줍니다 — 깊이 스크롤한 상태에서
          탭을 눌러도 이전 위치에 머물지 않도록 전환 즉시 최상단으로 올립니다.
          html에 scroll-behavior:smooth가 걸려 있어 behavior를 명시하지 않으면 그 규칙을 따라
@@ -826,7 +848,8 @@
         ss.caption = input.value;
         ss.captionTouched = true;
       } else {
-        return;
+        /* 도시명·랜드마크처럼 스타일이 정의한 임의의 텍스트 컨트롤 */
+        ss.c[input.dataset.text] = input.value;
       }
       update();
     });
@@ -925,6 +948,7 @@
   /* ---------------- init ---------------- */
   function init() {
     if (!STYLES.length) return;
+    renderHeroStats();
     renderTabs();
     renderPromptCards();
     renderStyleIntro();
