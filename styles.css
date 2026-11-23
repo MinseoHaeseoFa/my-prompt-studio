@@ -70,6 +70,14 @@ body[data-style="yuna"] {
   --thumb-ratio: 1 / 1;
   --hero-ratio: 1 / 1;
 }
+body[data-style="zen"] {
+  --accent: #c98a12;
+  --accent-soft: #f8ecc9;
+  --accent-deep: #8f6108;
+  --shot-ratio: 3 / 4;
+  --thumb-ratio: 3 / 4;
+  --hero-ratio: 4 / 5;
+}
 
 /* ---------- reset ---------- */
 *, *::before, *::after { box-sizing: border-box; }
@@ -471,6 +479,8 @@ main { display: block; }
 
 .result-foot { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 16px; }
 .result-note { flex-basis: 100%; margin: 2px 0 0; font-size: 11.5px; color: var(--ink-faint); }
+.result-note.guard-note { color: var(--ink-soft); }
+.result-note.guard-note b { color: var(--accent-deep); }
 
 /* ---------- buttons ---------- */
 .btn {

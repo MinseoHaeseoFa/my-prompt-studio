@@ -356,9 +356,9 @@
       { tag: "06 · 전개", title: "왼쪽에서 오른쪽으로 한 걸음씩", swatch: "#8FA98B",
         body: "기본은 단일 컷. 감정을 이어 보여줄 때 넓은 캔버스를 3~5칸으로 나눠 같은 인물이 자세만 바꾸며 이어지는 시퀀스를 씁니다. 칸 경계에 테두리를 긋지 않고 여백으로 구분하며, 마지막 칸에서 오브젝트가 감정을 맺습니다.",
         spec: "3~5칸 · 16:9 가로 스트립 · 칸 사이 여백 4~6% · 프레임리스" },
-      { tag: "07 · 글씨", title: "손글씨 한 줄과 작은 날짜", swatch: "#A9A0C8",
-        body: "글귀는 활자가 아닌 손글씨. 크기는 작고 자간이 들쭉날쭉하며 화면 위쪽이나 아래쪽에 조용히 놓입니다. 우측 하단에 작은 날짜, 하단에 핸들. 가끔 고무도장 같은 원형 테두리 안에 글씨를 넣습니다.",
-        spec: "손글씨 12~20px 상당 · 날짜 7~9px · 워터마크 8~10px" },
+      { tag: "07 · 글씨", title: "손글씨 한 줄, 그것만", swatch: "#A9A0C8",
+        body: "글귀는 활자가 아닌 손글씨. 크기는 작고 자간이 들쭉날쭉하며 화면 위쪽이나 아래쪽에 조용히 놓입니다. 날짜·서명·핸들 같은 워터마크는 넣지 않고, 글귀를 넣지 않을 때는 종이를 완전히 비웁니다.",
+        spec: "손글씨 12~20px 상당 1줄 · 날짜·서명·워터마크 0" },
       { tag: "08 · 말", title: "짧게, 다정하게, 반말로", swatch: "#E9C97A",
         body: "한 문장에서 두 문장. 단정한 반말이 기본이고 마침표로 또박또박 끊습니다. 위로는 달래지 않고 인정하는 방식, 기쁨은 아이처럼. 10~30자, 이모지는 0~1개.",
         spec: "10~30자 · 반말 단정문 · 마침표 · 이모지 0~1개" }
@@ -433,10 +433,10 @@
         let typeLine;
         if (ctx.get("captionMode").id === "canvas") {
           typeLine = cap
-            ? `Lettering: the Korean line "${cap}" is hand-lettered inside the paper in loose, uneven pen writing — small, off-baseline, slightly wobbly, as if written by the same hand that drew the figure. Place it in the upper third or just under the scene with plenty of air. Lower right: a tiny hand-lettered date "2026.11.22" and a faint pencil signature "@your_handle". No other text anywhere.`
-            : `Lettering: only a tiny hand-lettered date "2026.11.22" and a faint pencil signature "@your_handle" at the lower right. No other text anywhere.`;
+            ? `Lettering: the Korean line "${cap}" is hand-lettered inside the paper in loose, uneven pen writing — small, off-baseline, slightly wobbly, as if written by the same hand that drew the figure. Place it in the upper third or just under the scene with plenty of air. That line is the only writing on the page — no date, no name, no signature, no handle.`
+            : `Lettering: none at all. Leave the paper completely clean — no date, no name, no signature, no handle.`;
         } else if (ctx.get("captionMode").id === "below") {
-          typeLine = `Lettering: keep the artwork free of text and leave a clean paper margin at the bottom for a caption added later; only a tiny date "2026.11.22" and a faint pencil signature "@your_handle" at the lower right.`;
+          typeLine = `Lettering: keep the artwork free of text and leave a clean paper margin at the bottom for a caption added later. No date, no name, no signature, no handle anywhere on the page.`;
         } else {
           typeLine = `Lettering: none at all. Keep the paper completely clean.`;
         }
@@ -449,7 +449,7 @@
             objEn ? `Only ${objEn} as the symbol.` : "",
             color.id === "ink" ? "Ink only, no colour." : `One soft ${color.en} (${color.hex}) watercolour accent on at most 10% of the area.`,
             ctx.get("captionMode").id === "canvas" && cap ? `Hand-lettered Korean caption "${cap}".` : "",
-            `${H.cap(time.en)}. ${ratio.en}. No 3D, no gradients, no photorealism, no vector-clean edges, no extra text.`
+            `${H.cap(time.en)}. ${ratio.en}. No 3D, no gradients, no photorealism, no vector-clean edges, no extra text, no date, no signature, no handle.`
           ].filter(Boolean).join(" ");
         }
 
@@ -466,7 +466,7 @@
           typeLine,
           `Mood: ${mood} — tender, a little lonesome and kind at the same time. Gentle humour, no melodrama, no gloss.`,
           `Output: a single still image, ${ratio.en}, high resolution, flat 2D artwork, matte paper surface.`,
-          `Avoid: 3D render, CGI, plastic or glossy surfaces, smooth vector edges, gradient meshes, heavy shadows, cross-hatching, saturated or neon colours, busy backgrounds, symmetry, perfectly straight lines, realistic anatomy, extra fingers, stickers, glow effects, duplicated watermarks, any text other than the one caption and the small signature.`
+          `Avoid: 3D render, CGI, plastic or glossy surfaces, smooth vector edges, gradient meshes, heavy shadows, cross-hatching, saturated or neon colours, busy backgrounds, symmetry, perfectly straight lines, realistic anatomy, extra fingers, stickers, glow effects, any text other than the one caption.`
         ].join("\n\n");
       },
 
@@ -497,10 +497,10 @@
         let typeLine;
         if (ctx.get("captionMode").id === "canvas") {
           typeLine = cap
-            ? `글씨: 한국어 글귀 "${cap}"${H.josa(cap, "을", "를")} 그림 속 종이 위에 손글씨로 넣습니다. 크기는 작게, 자간과 기준선은 조금씩 어긋나게, 그림을 그린 같은 손이 쓴 것처럼 삐뚤빼뚤하게. 위치는 화면 위쪽 1/3 또는 장면 바로 아래, 주변에 여백을 넉넉히. 우측 하단에는 아주 작은 날짜 "2026.11.22"와 흐린 연필 서명 "@your_handle". 그 밖의 글자는 넣지 않습니다.`
-            : `글씨: 우측 하단에 아주 작은 날짜 "2026.11.22"와 흐린 연필 서명 "@your_handle"만. 다른 글자는 없습니다.`;
+            ? `글씨: 한국어 글귀 "${cap}"${H.josa(cap, "을", "를")} 그림 속 종이 위에 손글씨로 넣습니다. 크기는 작게, 자간과 기준선은 조금씩 어긋나게, 그림을 그린 같은 손이 쓴 것처럼 삐뚤삐뚤하게. 위치는 화면 위쪽 1/3 또는 장면 바로 아래, 주변에 여백을 넉넉히. 이 한 줄 말고 다른 글자는 넣지 않습니다 — 날짜도, 이름도, 서명도, 계정명도 없습니다.`
+            : `글씨: 전혀 넣지 않습니다. 종이를 완전히 깨끗하게 남깁니다 — 날짜도, 이름도, 서명도, 계정명도 없습니다.`;
         } else if (ctx.get("captionMode").id === "below") {
-          typeLine = `글씨: 그림 안에는 글자를 넣지 않고, 아래에 캡션을 붙일 수 있도록 종이 여백을 깨끗하게 남깁니다. 우측 하단의 작은 날짜 "2026.11.22"와 흐린 연필 서명 "@your_handle"만 허용합니다.`;
+          typeLine = `글씨: 그림 안에는 글자를 넣지 않고, 아래에 캡션을 붙일 수 있도록 종이 여백을 깨끗하게 남깁니다. 종이 위 어디에도 날짜·이름·서명·계정명은 넣지 않습니다.`;
         } else {
           typeLine = `글씨: 전혀 넣지 않습니다. 종이는 완전히 깨끗하게 남깁니다.`;
         }
@@ -513,7 +513,7 @@
             objKo ? `상징은 ${objKo}뿐.` : "",
             color.id === "ink" ? `먹색만, 채색 없음.` : `포인트 컬러는 ${color.ko}(${color.hex}) 한 색, 면적 10% 이하.`,
             ctx.get("captionMode").id === "canvas" && cap ? `손글씨 한국어 글귀 "${cap}".` : "",
-            `빛은 ${time.ko}. ${ratio.ko}. 3D·그라데이션·사실적 묘사·벡터 같은 매끈한 선 금지, 지정한 글자 외 텍스트 금지.`
+            `빛은 ${time.ko}. ${ratio.ko}. 3D·그라데이션·사실적 묘사·벡터 같은 매끈한 선 금지, 지정한 글자 외 텍스트·날짜·서명·계정명 금지.`
           ].filter(Boolean).join(" ");
         }
 
@@ -530,7 +530,7 @@
           typeLine,
           `분위기: ${ctx.preset.label} — 다정하고, 조금 쓸쓸하고, 동시에 따뜻합니다. 과장된 감정이나 번들거리는 마감은 없습니다.`,
           `출력: 정지 이미지 한 장, ${ratio.ko}, 고해상도, 평면 2D 일러스트, 무광 종이 질감.`,
-          `금지: 3D 렌더, CGI, 플라스틱 같은 광택, 매끈한 벡터 선, 그라데이션 메시, 진한 그림자, 촘촘한 해칭, 채도 높은 원색·형광색, 복잡한 배경, 완벽한 대칭, 반듯한 직선, 사실적 해부, 손가락 개수 오류, 스티커·글로우 효과, 중복 워터마크, 지정한 글귀와 서명 외의 모든 글자.`
+          `금지: 3D 렌더, CGI, 플라스틱 같은 광택, 매끈한 벡터 선, 그라데이션 메시, 진한 그림자, 촘촘한 해칭, 채도 높은 원색·형광색, 복잡한 배경, 완벽한 대칭, 반듯한 직선, 사실적 해부, 손가락 개수 오류, 스티커·글로우 효과, 지정한 글귀 외의 모든 글자.`
         ].join("\n\n");
       },
 

@@ -18,6 +18,20 @@
     { key: "motionKo", icon: "🎬", title: "영상 모션 프롬프트", kind: "motion", lang: "한국어", cls: "ko" }
   ];
 
+  /* 날짜·서명·@계정 워터마크 금지 — 스타일 파일이 빠뜨려도 엔진이 4종 모두에 마지막으로 붙입니다.
+     글귀(캡션)는 스타일이 의도적으로 그리는 것이라 "위에서 요청한 글귀 외"로 한정합니다. */
+  const TEXT_GUARD = {
+    en: "No date stamp, no time stamp, no signature, no watermark, no logo, and no @ username or social media handle anywhere in the frame; no text beyond the caption this prompt already asks for.",
+    ko: "화면 안에 날짜·시간·서명·워터마크·로고·@ 계정명을 넣지 마세요. 이 프롬프트가 이미 요청한 글귀 밖의 다른 글자도 넣지 마세요."
+  };
+
+  function guardText(prompt, lang) {
+    const guard = TEXT_GUARD[lang];
+    if (!prompt) return "";
+    if (prompt.indexOf(guard) !== -1) return prompt;
+    return prompt.replace(/\s+$/, "") + "\n\n" + guard;
+  }
+
   let currentId = STYLES.length ? STYLES[0].id : null;
   let brief = false;
   let prompts = { imageEn: "", imageKo: "", motionEn: "", motionKo: "" };
@@ -321,10 +335,10 @@
     const ctx = makeCtx(style, ss);
     try {
       prompts = {
-        imageEn: style.build.imageEn(ctx),
-        imageKo: style.build.imageKo(ctx),
-        motionEn: style.build.motionEn(ctx),
-        motionKo: style.build.motionKo(ctx)
+        imageEn: guardText(style.build.imageEn(ctx), "en"),
+        imageKo: guardText(style.build.imageKo(ctx), "ko"),
+        motionEn: guardText(style.build.motionEn(ctx), "en"),
+        motionKo: guardText(style.build.motionKo(ctx), "ko")
       };
     } catch (err) {
       console.warn("prompt build failed", err);
