@@ -82,11 +82,11 @@
 
   /* ---------- 문구 자리 ---------- */
   const LAYOUTS = {
-    top: { label: "위쪽", en: "in the upper third of the sheet, the lower part left open", ko: "지면 위쪽 3분의 1에, 아래는 비워 둔" },
-    center: { label: "가운데", en: "in the middle of the sheet with a wide empty margin on all four sides", ko: "사방으로 넓은 여백을 두고 지면 가운데에" },
+    top: { label: "위쪽", en: "in the upper third of the frame, the lower part left open", ko: "화면 위쪽 3분의 1에, 아래는 비워 둔" },
+    center: { label: "가운데", en: "in the middle of the composition with a wide empty margin on all four sides", ko: "사방으로 넓은 여백을 두고 화면 가운데에" },
     left: { label: "왼쪽에 붙여", en: "hugging the left third, the right side breathing empty", ko: "왼쪽 3분의 1에 붙여, 오른쪽을 비워 둔" },
-    side: { label: "세로로 한쪽", en: "running down one side of the sheet, leaving the rest of the surface open", ko: "지면 한쪽을 세로로 따라 내려가며 나머지를 비워 둔" },
-    bottom: { label: "아래쪽", en: "toward the lower third, the upper part left open", ko: "지면 아래쪽 3분의 1에, 위를 비워 둔" }
+    side: { label: "세로로 한쪽", en: "running down one side of the frame, leaving the rest of the surface open", ko: "화면 한쪽을 세로로 따라 내려가며 나머지를 비워 둔" },
+    bottom: { label: "아래쪽", en: "toward the lower third of the frame, the upper part left open", ko: "화면 아래쪽 3분의 1에, 위를 비워 둔" }
   };
 
   /* ---------- 낙관 ---------- */
@@ -386,7 +386,7 @@
         en: "a pink and lilac dusk sky occupies the upper two thirds, the lettering floats in its middle, and the snowfield with the car and the two figures fills the bottom third",
         ko: "분홍과 라일락 노을 하늘이 위 2/3를 차지하고 그 가운데에 문구가 떠 있으며, 자동차와 두 사람이 있는 설원이 아래 1/3을 채우는"
       },
-      seed: { captionMode: "block", ink: "black", accent: "rose", layout: "center", seal: "square", sealPos: "end", motion: "drift", ratio: "9:16" }
+      seed: { captionMode: "block", ink: "black", accent: "none", layout: "center", seal: "square", sealPos: "end", motion: "drift", ratio: "9:16" }
     },
     {
       id: "minim",
@@ -667,7 +667,7 @@
           sealLine,
           sceneEn ? `Composition: ${sceneEn}.` : "",
           `Light and finish: ${p.finish.en}. The whole piece feels quiet, warm and unhurried, made to be kept in a drawer or pinned above a desk.`,
-          `Output: one finished piece, ${ratio.en}, high resolution, true texture — paper fibre, ink sheen and a natural soft shadow where the surface lifts.`,
+          `Output: one finished piece, ${ratio.en}, high resolution, true material texture — the paper, cloth or painted surface, the ink's sheen and a natural soft shadow where the surface lifts.`,
           `Avoid: typed fonts, printed text, calligraphic computer lettering, fake or gibberish Hangul, Chinese or Japanese characters, any extra words or letters, Latin captions, dates, numbers, logos, watermarks, borders, frames, stickers, emoji, 3D rendering, neon or oversaturated colour, glossy plastic look, duplicated or mirrored text, and any @ username or social media handle.`
         ]
           .filter(Boolean)
@@ -724,7 +724,7 @@
           sealLine,
           sceneKo ? `구도: ${sceneKo}.` : "",
           `빛과 마감: ${p.finish.ko}. 전체가 조용하고 따뜻하며 서두르지 않은, 서랍에 넣어 두거나 책상 위에 붙여 두고 싶은 작품.`,
-          `출력: 완성된 작품 한 점, ${ratio.ko}, 고해상도, 진짜 질감 — 종이 섬유, 먹의 윤기, 지면이 떠 있는 자리의 자연스러운 부드러운 그림자까지.`,
+          `출력: 완성된 작품 한 점, ${ratio.ko}, 고해상도, 진짜 질감 — 종이·천·그림 바탕의 결, 먹의 윤기, 바탕이 떠 있는 자리의 자연스러운 부드러운 그림자까지.`,
           `금지: 활자·인쇄된 글자·컴퓨터 캘리그라피 서체, 가짜이거나 깨진 한글, 한자·일본어 문자, 요청 밖의 추가 글자, 영문 캡션, 날짜·숫자, 로고·워터마크, 테두리·액자, 스티커·이모지, 3D 렌더, 형광·과채도, 광택 나는 플라스틱 질감, 글자의 중복·좌우 반전, @ 계정명이나 SNS 핸들.`
         ]
           .filter(Boolean)
