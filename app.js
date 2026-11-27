@@ -25,8 +25,10 @@
     ko: "화면 안에 날짜·시간·서명·워터마크·로고·@ 계정명을 넣지 마세요. 이 프롬프트가 이미 요청한 글귀 밖의 다른 글자도 넣지 마세요."
   };
 
-  function guardText(prompt, lang) {
-    const guard = TEXT_GUARD[lang];
+  /* 스타일이 자기 가드를 정의하면 그것을 씁니다. 캘리그라피(08 CALLI)는 문구와
+     낙관의 작가명이 곧 작품이라 '서명 금지' 기본 가드로는 의도한 글씨까지 막힙니다. */
+  function guardText(prompt, lang, style) {
+    const guard = (style && style.textGuard && style.textGuard[lang]) || TEXT_GUARD[lang];
     if (!prompt) return "";
     if (prompt.indexOf(guard) !== -1) return prompt;
     return prompt.replace(/\s+$/, "") + "\n\n" + guard;
@@ -356,10 +358,10 @@
     const ctx = makeCtx(style, ss);
     try {
       prompts = {
-        imageEn: guardText(style.build.imageEn(ctx), "en"),
-        imageKo: guardText(style.build.imageKo(ctx), "ko"),
-        motionEn: guardText(style.build.motionEn(ctx), "en"),
-        motionKo: guardText(style.build.motionKo(ctx), "ko")
+        imageEn: guardText(style.build.imageEn(ctx), "en", style),
+        imageKo: guardText(style.build.imageKo(ctx), "ko", style),
+        motionEn: guardText(style.build.motionEn(ctx), "en", style),
+        motionKo: guardText(style.build.motionKo(ctx), "ko", style)
       };
     } catch (err) {
       console.warn("prompt build failed", err);
