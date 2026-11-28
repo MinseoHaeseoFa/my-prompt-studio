@@ -197,7 +197,7 @@
     {
       id: "yarn-cat",
       emoji: "🐈",
-      label: "펠트 고양이와",
+      label: "펠트 고양이와 함께",
       thumb: "wool/yarn-cat.jpg",
       thumbPos: "center 45%",
       caption: "오늘의 온기는 고양이 몫.",
