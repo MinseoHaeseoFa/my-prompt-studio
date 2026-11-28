@@ -110,6 +110,14 @@ body[data-style="calli"] {
   --thumb-ratio: 4 / 5;
   --hero-ratio: 4 / 5;
 }
+body[data-style="wool"] {
+  --accent: #c0707f;
+  --accent-soft: #f8e6e9;
+  --accent-deep: #94505d;
+  --shot-ratio: 4 / 5;
+  --thumb-ratio: 4 / 5;
+  --hero-ratio: 4 / 5;
+}
 
 /* ---------- reset ---------- */
 *, *::before, *::after { box-sizing: border-box; }

@@ -276,7 +276,10 @@
   function renderControls() {
     const style = current();
     const ss = state();
-    $("#controlFields").innerHTML = style.controls.map((spec) => renderControl(style, ss, spec)).join("");
+    /* 프리셋이 자기에게 맞지 않는 칩을 숨길 수 있습니다(hideIn) —
+       예: 04 ZEN의 굵은 먹붓 카드는 장소·잎·인물·낙엽 칩을 쓰지 않습니다. */
+    const usable = style.controls.filter((c) => !(c.hideIn && c.hideIn.includes(ss.presetId)));
+    $("#controlFields").innerHTML = usable.map((spec) => renderControl(style, ss, spec)).join("");
     syncPressed();
   }
 

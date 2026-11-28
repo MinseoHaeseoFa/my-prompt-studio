@@ -80,6 +80,29 @@
       en: "flat sage green, ink blue and warm cream",
       ko: "플랫 세이지 그린, 먹청색, 따뜻한 크림",
       short: "sage and ink blue"
+    },
+    /* 판화(white-line wood engraving) 카드 전용 — 짙은 색 잉크 한 가지 + 절제된 강조색 */
+    pine: {
+      label: "판화 · 소나무",
+      hex: "#1F3D32",
+      en: "flat pine green, warm sand and a touch of gold",
+      ko: "플랫 소나무 초록, 따뜻한 모래색, 금빛 한 점",
+      short: "pine green ink and gold",
+      darkEn: "a deep pine-green ink (#1F3D32) that still reads clearly as green rather than black",
+      darkKo: "검정이 아니라 초록으로 또렷이 읽히는 짙은 소나무 초록 잉크(#1F3D32)",
+      accEn: "a restrained gold ochre (#C99B2E)",
+      accKo: "절제된 금빛 오커(#C99B2E)"
+    },
+    inkblue: {
+      label: "판화 · 먹청",
+      hex: "#25304F",
+      en: "flat ink blue, pale stone and a hint of coral",
+      ko: "플랫 먹청색, 옅은 돌색, 산호빛 한 점",
+      short: "ink-blue and coral",
+      darkEn: "a deep ink-blue (#25304F) that still reads as blue rather than black",
+      darkKo: "검정이 아니라 파랑으로 읽히는 짙은 먹청색 잉크(#25304F)",
+      accEn: "a muted coral (#C2655A)",
+      accKo: "차분한 산호빛(#C2655A)"
     }
   };
 
@@ -108,6 +131,12 @@
       en: "a narrow old alley whose stone paving and low walls step down between the buildings",
       ko: "건물 사이로 낮은 담장과 돌바닥이 계단처럼 이어지는 좁은 옛 골목",
       short: "a narrow old alley"
+    },
+    fortress: {
+      label: "성곽길",
+      en: "a curving stone fortress path with a low crenellated parapet running along one side, the paving leading around the wall to the focal gate",
+      ko: "한쪽으로 낮은 여장이 이어지는 굽은 성곽 돌길, 바닥이 담장을 돌아 중심 대문으로 이어지는",
+      short: "a curving fortress path"
     }
   };
 
@@ -274,6 +303,23 @@
         ko: "중간 거리 호수 위로 경포대가 앉아 있고, 왼쪽에는 오죽헌의 대문, 오른쪽으로는 소나무가 늘어선 해변길이 이어집니다. 지붕에는 얇은 눈"
       },
       seed: { city: "GANGNEUNG", landmark: "Gyeongpodae pavilion", season: "winter", palette: "indigo", ground: "avenue", figures: "family", sky: "white", label: "cityTop", motion: "still", ratio: "4:5" }
+    },
+    {
+      /* 판화 변형 — 같은 탭 안의 white-line 목판화 카드.
+         engrave: true 이면 아래 ENGR 빌더가 4종 프롬프트를 대신 씁니다. */
+      id: "suwon",
+      emoji: "🏯",
+      label: "수원 · 성곽 판화",
+      thumb: "poster/suwon.jpg",
+      thumbPos: "center 45%",
+      caption: "성을 돌면 도시가 한 장이 된다.",
+      captions: ["성을 돌면 도시가 한 장이 된다.", "돌담 하나에 시간이 새겨져 있다.", "판화처럼 남는 오후."],
+      engrave: true,
+      scene: {
+        en: "the stone gate Paldalmun and the long fortress wall of Hwaseong dominate, the tiled roofs of Hwaseong Haenggung and the pavilion Banghwasuryujeong rising behind on the hill, four tiny walkers on the curving stone path and gold autumn ginkgo at the left",
+        ko: "돌로 쌓은 팔달문과 길게 이어지는 화성 성곽이 중심을 잡고, 뒤 언덕으로 화성행궁의 기와지붕과 방화수류정 누각이 솟습니다. 굽은 성곽 돌길에 작은 행인 네 명, 왼쪽에는 금빛 가을 은행잎"
+      },
+      seed: { city: "SUWON", landmark: "Paldalmun gate and the stone fortress wall of Hwaseong", season: "autumn", palette: "pine", ground: "fortress", figures: "four", sky: "white", label: "cityTop", motion: "leaves", ratio: "4:5" }
     }
   ];
 
@@ -283,6 +329,168 @@
     if (!s) return "";
     return /^[\x20-\x7E]+$/.test(s) ? s.toUpperCase() : s;
   }
+
+  /* ---------- 판화 변형 (engrave: true 프리셋 전용) ----------
+     펜선 위에 플랫 채색을 얹는 기본 포스터와 달리, 판화 카드는
+     짙은 잉크 덩어리를 파고든 흰 선(white-line)으로 깊이를 만듭니다.
+     종이는 순백, 강조색은 한 접만. */
+  const ENGR = {
+    imageEn(ctx) {
+      const pal = PALETTES[ctx.get("palette").id];
+      const season = SEASONS[ctx.get("season").id];
+      const ground = GROUNDS[ctx.get("ground").id];
+      const figs = FIGURES[ctx.get("figures").id];
+      const ratio = ctx.get("ratio");
+      const city = labelText(ctx.text("city"));
+      const landmark = ctx.text("landmark").trim() || "the city's best-known landmark";
+      const showLabel = ctx.get("label").id === "cityTop" && city;
+      const sceneEn = ctx.scene("en");
+      const dark = pal.darkEn || "a deep chromatic ink";
+      const acc = pal.accEn || "one restrained accent ink";
+
+      if (ctx.brief) {
+        return [
+          `A collectible white-line wood-engraving city poster of ${city || "the city"}, ${ratio.en} on pure-white paper.`,
+          `${H.cap(landmark)} dominant plus two recognisable supporting landmarks, united along ${ground.en}, close low oblique viewpoint with a timber or masonry post cropped at the foreground edge.`,
+          `${dark} for the main masses with white incised lines and rhythmic parallel cuts carved through them; ${acc} on a few surfaces and sparse planting; unprinted white sky.`,
+          `${H.cap(season.canopyEn)}. ${H.cap(figs.en)}.`,
+          showLabel ? `Small uppercase "${city}" at the upper left; no other lettering, logos, signatures or watermarks.` : `No lettering, logos, signatures or watermarks.`
+        ].join(" ");
+      }
+
+      return [
+        `A collectible white-line wood-engraving city poster — a hand-carved relief print pulled on pure-white paper. Not a photograph, not a 3D render, not a digital collage, not a watercolour.`,
+        `Subject: the city of ${city || "a city"}. Make ${landmark} dominant, and automatically choose two further landmarks that people recognise this city by, with contrasting architectural forms — a gate, a tower, a bridge, a palace roof, a pavilion.`,
+        `Composition: one large focal landmark and two subordinate ones, staggered in depth with varied scale, spacing and gentle overlaps. Unite them through believable ground, foundations and ${ground.en}. Avoid evenly spaced lineups, stacked skyline tiers and collage; keep every silhouette and proportion true to the building it comes from.`,
+        `Viewpoint: close and low-oblique, as if standing just inside a locally appropriate covered passage — boldly crop one substantial timber or masonry post along a foreground edge and a small section of roof underside above, so the city is framed without hiding the landmarks. Let the floorboards or paving lead diagonally toward the focal entrance.`,
+        `Ink and paper: pure white unprinted paper (#FFFFFF); the sky stays unprinted and takes at least a quarter of the frame. Two inks only — ${dark} for the main masses, and ${acc} kept to selected architectural surfaces, reflected light and sparse planting. The dark ink must remain a colour, never a neutral black, and the accent never covers more than a tenth of the sheet.`,
+        `Carving: depth comes from white lines cut through the dark masses — fine white incisions for tile edges and window mullions, rhythmic parallel cuts for roofs and stone courses, and denser ornamental carving on the focal building. Balance tactile printmaking detail with clear silhouettes, quiet shadow areas and broad calm passages of solid ink. No grey mid-tones: a line is either carved white or left in ink.`,
+        `Foliage: ${season.canopyEn}. Draw it as carved shapes rather than painted texture, so the accent colour reads as ink sitting on the branches.`,
+        `Figures: ${figs.en}.`,
+        `Lettering: ${showLabel ? `set the word "${city}" in small uppercase sans-serif at the upper left with restrained letter-spacing and ample white clearance; keep every sign, plaque and shopfront blank.` : `none at all; keep every sign and plaque blank.`}`,
+        `Scene direction: ${H.cap(H.stripDot(sceneEn))}.`,
+        `Mood: collected and quietly proud — the print a city would sell in its own museum shop, pulled by hand on thick white paper.`,
+        `Output: one finished print, ${ratio.en}, high resolution, crisp carved linework, flat matte impression with no paper yellowing.`,
+        `Avoid: photography, photorealistic rendering, 3D, yellowed or cream paper, gradients, grey mid-tones, watercolour bleed, dense all-over etching hatching, thin sketchy pen outlines without carved masses, neon or oversaturated colour, stacked skyline tiers, distorted architecture, borders, frames, logos, signatures, watermarks, and any lettering other than the single city name.`
+      ].join("\n\n");
+    },
+
+    imageKo(ctx) {
+      const pal = PALETTES[ctx.get("palette").id];
+      const season = SEASONS[ctx.get("season").id];
+      const ground = GROUNDS[ctx.get("ground").id];
+      const figs = FIGURES[ctx.get("figures").id];
+      const ratio = ctx.get("ratio");
+      const city = labelText(ctx.text("city"));
+      const landmark = ctx.text("landmark").trim() || "그 도시에서 가장 잘 알려진 랜드마크";
+      const showLabel = ctx.get("label").id === "cityTop" && city;
+      const sceneKo = ctx.scene("ko");
+      const dark = pal.darkKo || "짙은 유채색 잉크";
+      const acc = pal.accKo || "절제된 강조색 한 가지";
+
+      if (ctx.brief) {
+        return [
+          `순백 종이에 찍은 화이트 라인 목판화 도시 포스터, ${city || "한 도시"}, ${ratio.ko}.`,
+          `${landmark} 중심에 알아볼 만한 보조 랜드마크 둘, ${ground.ko}로 잇고, 전경 가장자리에 기둥을 과감히 잘라 넣은 근거리 낮은 사선 시점.`,
+          `주요 덩어리는 ${dark}, 그 위를 파고든 흰 선과 리듬 있는 평행 커팅, ${acc}은 몇몇 면과 성긴 수목에만, 하늘은 인쇄하지 않은 흰 종이.`,
+          `${season.canopyKo}. ${figs.ko}.`,
+          showLabel ? `좌상단에 작은 대문자 "${city}", 그 외 글자·로고·서명·워터마크 금지.` : `글자·로고·서명·워터마크 금지.`
+        ].join(" ");
+      }
+
+      return [
+        `순백 종이에 손으로 새겨 찍은 화이트 라인 목판화 도시 포스터 — 사진도, 3D 렌더도, 디지털 콜라주도, 수채도 아닙니다.`,
+        `주제: ${city || "한 도시"}. ${landmark}${H.josa(landmark, "을", "를")} 중심으로 크게 두고, 그 도시에서 사람들이 알아볼 만한 랜드마크 두 곳을 자동으로 골라 옆에 세웁니다. 형태가 서로 대조되는 것으로 — 대문, 탑, 다리, 궁궐 지붕, 누각.`,
+        `구도: 큰 중심 랜드마크 하나와 보조 둘을 깊이를 달리해 배치하고, 크기·간격·겹침을 조금씩 달리합니다. 셋은 믿을 만한 지면과 기단, 그리고 ${ground.ko}로 이어 붙입니다. 같은 간격의 줄 세우기, 층층이 쌓은 스카이라인, 콜라주는 피하고, 각 건물의 실루엣과 비례는 원래 건물 그대로 둡니다.`,
+        `시점: 그 지역에 어울리는 지붕 있는 통로 안에서 본 것처럼 가깝고 낮은 사선. 전경 가장자리에 굵은 목재나 석재 기둥 하나를 과감히 잘라 넣고, 위쪽에는 지붕 아래면을 조금만 넣어 도시를 액자처럼 감싸되 랜드마크를 가리지 않습니다. 마루나 포장은 중심 입구를 향해 대각선으로 이끕니다.`,
+        `잉크와 종이: 인쇄하지 않은 순백 종이(#FFFFFF). 하늘은 비워 두어 화면의 4분의 1 이상을 차지합니다. 잉크는 두 가지뿐 — 주요 덩어리에 ${dark}, 그리고 몇몇 건축 면과 반사광, 성긴 수목에만 ${acc}. 짙은 잉크는 반드시 색으로 읽혀야 하고 검정으로 죽지 않으며, 강조색은 종이의 10분의 1을 넘지 않습니다.`,
+        `조각: 깊이는 짙은 덩어리를 파고든 흰 선에서 나옵니다 — 기와 끝과 창살의 가는 흰 홈, 지붕과 돌 켜의 리듬 있는 평행 커팅, 중심 건물의 촘촘한 장식 조각. 판화의 촉각적 디테일과 또렷한 실루엣, 조용한 그림자, 넓고 고요한 먹면의 균형을 잡습니다. 중간 회색은 없습니다 — 선은 흰색으로 파이거나 잉크로 남거나 둘 중 하나입니다.`,
+        `수목: ${season.canopyKo}. 칠한 질감이 아니라 새긴 덩어리로 그려, 강조색이 가지 위에 앉은 잉크로 보이게 합니다.`,
+        `인물: ${figs.ko}.`,
+        `글자: ${showLabel ? `좌상단에 작은 대문자 "${city}"${H.josa(city, "을", "를")} 자간을 조금 벌려 넣고 주변에 넉넉한 여백을 둡니다. 모든 표지판·현판·간판은 비워 둡니다.` : `전혀 넣지 않습니다. 모든 표지판과 간판을 비워 둡니다.`}`,
+        `장면 지시: ${H.stripDot(sceneKo)}.`,
+        `분위기: 차분하고 은근히 자랑스러운 — 그 도시 미술관 상점에서 두꺼운 흰 종이에 손으로 찍어 팔 법한 판화.`,
+        `출력: 완성된 판화 한 장, ${ratio.ko}, 고해상도, 또렷한 조각선, 누렇게 뜨지 않은 평면 무광 인쇄.`,
+        `금지: 사진, 사실적 렌더링, 3D, 누렇게 뜬 종이, 그라데이션, 회색 중간톤, 수채 번짐, 화면 전체를 덮는 판화식 잔해칭, 짙은 덩어리 없이 가는 펜선만 있는 그림, 형광·과채도, 스카이라인 적층, 왜곡된 건축, 테두리·액자, 로고·서명·워터마크, 그리고 도시 이름 한 줄 외의 모든 글자.`
+      ].join("\n\n");
+    },
+
+    motionEn(ctx) {
+      const motion = ctx.get("motion");
+      const season = SEASONS[ctx.get("season").id];
+      const ratio = ctx.get("ratio");
+      const city = labelText(ctx.text("city"));
+
+      if (ctx.brief) {
+        return [
+          `6-second seamless loop at 24 fps, ${ratio.en}: the same carved print, animated in flat 2D.`,
+          motion.id === "pan"
+            ? `The whole sheet slides sideways three percent like a camera passing a framed print; the carving stays rigid.`
+            : motion.id === "breathe"
+              ? `An almost imperceptible two percent push-in while one pedestrian takes a single step.`
+              : motion.id === "still"
+                ? `The print holds completely still.`
+                : `Locked camera; only a few leaves drift across the unprinted white sky.`,
+          `Ink masses, carved white lines and the white paper never boil or shift. First and last frame identical.`,
+          city ? `The only lettering is the city name already printed; no other text, no watermark.` : `No text, no watermark.`
+        ].join(" ");
+      }
+
+      return [
+        `Animate the finished print into a 6-second seamless loop at 24 fps — flat 2D motion laid over a carved relief print, never a 3D camera move and never a morph.`,
+        motion.id === "pan"
+          ? `Camera: the whole sheet slides sideways by about three percent of the frame width across the loop, perfectly even, like a camera gliding past a framed print on a wall. Nothing inside the print moves except a few leaves.`
+          : motion.id === "breathe"
+            ? `Camera: an extremely slow push-in of about two percent over the whole loop, with no zoom snap and no drift off centre.`
+            : `Camera: completely locked. No pan, no tilt, no zoom, no parallax, no focus change.`,
+        motion.id === "still"
+          ? `Movement: the print holds completely still, like a sheet of paper in a frame; at most the ink breathes by half a pixel.`
+          : `Movement: ${season.canopyEn} — three to eight leaves drift down across the unprinted white sky, each turning slowly and leaving the frame without a bounce.${motion.id === "breathe" ? " One pedestrian takes a single unhurried step." : ""}`,
+        `Print behaviour: the carved white lines stay exactly where they are cut, the dark masses keep their edges, and the accent ink never spreads or brightens. No line re-cuts itself, no texture creeps across the paper.`,
+        `Paper: the white stays exactly #FFFFFF in every frame, so the print never looks lit, graded or yellowed.`,
+        `Loop: the leaf drifts and the ground movement are timed to whole numbers inside six seconds; the last frame is identical to the first. No fade, no title card, no sound.`,
+        `Guardrails: no 3D, no lighting change, no moving shadows, no speed ramps, no new elements, and no added text beyond the single city name already printed.`
+      ].filter(Boolean).join("\n\n");
+    },
+
+    motionKo(ctx) {
+      const motion = ctx.get("motion");
+      const season = SEASONS[ctx.get("season").id];
+      const ratio = ctx.get("ratio");
+      const city = labelText(ctx.text("city"));
+
+      if (ctx.brief) {
+        return [
+          `${ratio.ko}, 6초 무한 반복, 24fps: 같은 판화를 평면 2D로.`,
+          motion.id === "pan"
+            ? `액자에 걸린 판화 앞을 지나가는 카메라처럼 종이 전체가 3퍼센트 옆으로 흐르고, 조각은 단단히 고정됩니다.`
+            : motion.id === "breathe"
+              ? `거의 느껴지지 않는 2퍼센트 푸시인, 행인 하나가 한 걸음 딛는 동안.`
+              : motion.id === "still"
+                ? `판화가 완전히 멈춰 있습니다.`
+                : `카메라 고정, 잎 몇 장이 인쇄되지 않은 흰 하늘을 가로질러 내려옵니다.`,
+          `짙은 잉크 면·파인 흰 선·흰 종이는 끓거나 밀리지 않습니다. 첫 프레임과 마지막 프레임 동일.`,
+          city ? `글자는 이미 찍힌 도시 이름 하나뿐, 그 외 텍스트와 워터마크는 없습니다.` : `글자·워터마크 없음.`
+        ].join(" ");
+      }
+
+      return [
+        `완성된 판화를 6초 무한 반복 영상으로 만듭니다. 24fps, 새겨 찍은 판화 위에 평면 2D 움직임만 얹으며, 3D 카메라 이동도 모핑도 아닙니다.`,
+        motion.id === "pan"
+          ? `카메라: 루프 전체에서 종이가 화면 폭의 약 3퍼센트만큼 고르게 옆으로 흐릅니다. 벽에 걸린 판화 앞을 카메라가 지나가는 것처럼. 그림 안에서는 잎 몇 장만 따로 움직입니다.`
+          : motion.id === "breathe"
+            ? `카메라: 루프 전체에서 약 2퍼센트의 아주 느린 푸시인. 줌이 튀지 않고 중심에서 벗어나지도 않습니다.`
+            : `카메라: 완전 고정. 팬·틸트·줌·시차 이동·포커스 변화 없음.`,
+        motion.id === "still"
+          ? `움직임: 액자 속 종이처럼 판화가 완전히 멈춰 있고, 기껏해야 잉크가 반 픽셀 숨 쉬는 정도입니다.`
+          : `움직임: ${season.canopyKo} — 잎 서너 장에서 여덟 장이 인쇄되지 않은 흰 하늘을 가로질러 내려옵니다. 각각 천천히 돌며 튀지 않고 화면 밖으로 나갑니다.${motion.id === "breathe" ? " 행인 하나가 서두르지 않고 한 걸음 딛습니다." : ""}`,
+        `판화의 성질: 파인 흰 선은 새겨진 자리에 그대로 있고 짙은 면은 가장자리를 지킵니다. 강조색 잉크는 번지거나 밝아지지 않습니다. 선이 다시 새겨지거나 종이 위로 질감이 기어오지 않습니다.`,
+        `종이: 흰색은 모든 프레임에서 정확히 #FFFFFF — 조명이 비치거나 보정되거나 누렇게 뜬 느낌이 없습니다.`,
+        `루프: 낙엽의 흐름과 지면의 움직임이 6초 안에 정수로 들어가 마지막 프레임이 첫 프레임과 같습니다. 페이드·타이틀 카드·소리는 없습니다.`,
+        `가드레일: 3D·조명 변화·그림자 이동·속도 램프·새 요소·추가 글자를 금지합니다. 이미 찍힌 도시 이름 한 줄 외에는 아무 글자도 넣지 않습니다.`
+      ].filter(Boolean).join("\n\n");
+    }
+  };
 
   MPS.register({
     id: "poster",
@@ -379,12 +587,15 @@
       { file: "poster/jeju.jpg", title: "제주 · 돌담 해안길", caption: "돌담은 바람이 만든 글씨다.", pos: "center 40%",
         preset: "jeju", seed: { city: "JEJU", landmark: "Seongsan Ilchulbong tuff cone", season: "summer", palette: "coral", ground: "riverside", figures: "four", sky: "pale", label: "cityTop", motion: "leaves", ratio: "4:5" } },
       { file: "poster/gangneung.jpg", title: "강릉 · 소나무 호수길", caption: "겨울 호수는 조용히 도시를 품는다.", pos: "center 40%",
-        preset: "gangneung", seed: { city: "GANGNEUNG", landmark: "Gyeongpodae pavilion", season: "winter", palette: "indigo", ground: "avenue", figures: "family", sky: "white", label: "cityTop", motion: "still", ratio: "4:5" } }
+        preset: "gangneung", seed: { city: "GANGNEUNG", landmark: "Gyeongpodae pavilion", season: "winter", palette: "indigo", ground: "avenue", figures: "family", sky: "white", label: "cityTop", motion: "still", ratio: "4:5" } },
+      { file: "poster/suwon.jpg", title: "수원 · 성곽 판화", caption: "성을 돌면 도시가 한 장이 된다.", pos: "center 45%",
+        preset: "suwon", seed: { city: "SUWON", landmark: "Paldalmun gate and the stone fortress wall of Hwaseong", season: "autumn", palette: "pine", ground: "fortress", figures: "four", sky: "white", label: "cityTop", motion: "leaves", ratio: "4:5" } }
     ],
 
     /* ---------------- 프롬프트 빌더 ---------------- */
     build: {
       imageEn(ctx) {
+        if (ctx.preset.engrave) return ENGR.imageEn(ctx);
         const season = SEASONS[ctx.get("season").id];
         const pal = PALETTES[ctx.get("palette").id];
         const ground = GROUNDS[ctx.get("ground").id];
@@ -430,6 +641,7 @@
       },
 
       imageKo(ctx) {
+        if (ctx.preset.engrave) return ENGR.imageKo(ctx);
         const season = SEASONS[ctx.get("season").id];
         const pal = PALETTES[ctx.get("palette").id];
         const ground = GROUNDS[ctx.get("ground").id];
@@ -475,6 +687,7 @@
       },
 
       motionEn(ctx) {
+        if (ctx.preset.engrave) return ENGR.motionEn(ctx);
         const season = SEASONS[ctx.get("season").id];
         const motion = ctx.get("motion");
         const ratio = ctx.get("ratio");
@@ -513,6 +726,7 @@
       },
 
       motionKo(ctx) {
+        if (ctx.preset.engrave) return ENGR.motionKo(ctx);
         const season = SEASONS[ctx.get("season").id];
         const motion = ctx.get("motion");
         const ratio = ctx.get("ratio");

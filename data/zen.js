@@ -319,8 +319,141 @@
         ko: "해 질 무렵의 빈 한옥 마당. 처마 아래 종이 등불 하나, 돌계단 옆 질그릇 하나, 오른쪽에서 안으로 뻗은 앙상한 가지. 사람은 없습니다"
       },
       seed: { place: "courtyard", foliage: "bare", figures: "none", motion: "still", air: "some", light: "dusk", ratio: "4:5" }
-    }
+    },
+    {
+      /* 굵은 먹붓 변형 — 가는 먹선 풍경과 같은 탭 안에 두는 손그림 인물 장면.
+         bold: true 이면 below의 BOLD 빌더가 4종 프롬프트를 대신 씁니다. */
+      id: "craft-kitchen",
+      emoji: "🐟",
+      label: "굵은 먹붓 · 생선 손질",
+      thumb: "zen/kitchen-craft.jpg",
+      thumbPos: "center 40%",
+      caption: "손끝에서 저녁이 준비된다.",
+      captions: ["손끝에서 저녁이 준비된다.", "칼 한 번에 하루가 정리된다.", "불 앞에 선 사람은 말이 없다."],
+      bold: true,
+      scene: {
+        en: "a stout middle-aged cook in a flat cap and a heavy apron leans over a thick wooden cutting board, a short knife in his hand filleting one whole fish; a plain tiled wall of thin lines rises behind him, one round wood-fired oven with a dark mouth stands at the left, a steel bowl and a bunch of scallions sit at the counter edge, his sleeves rolled to the elbow and his eyes on the blade",
+        ko: "납작모자에 두툼한 앞치마를 두른 중년의 요리사가 두꺼운 나무 도마 위로 몸을 숙여 짧은 칼로 생선 한 마리를 손질합니다. 뒤로는 가는 선으로 그린 타일 벽, 왼쪽에는 어두운 아궁이가 있는 둥근 화덕, 카운터 끝에는 놋그릇과 쪽파 한 단. 소매는 팔꿈치까지 걷어 올리고 눈은 칼날에 고정되어 있습니다"
+      },
+      seed: { motion: "still", light: "overcast", ratio: "4:5" }
+    },
   ];
+
+  /* ---------- 굵은 먹붓 변형 (bold: true 프리셋 전용) ----------
+     가는 먹선 · 아이보리 종이 대신, 순백 종이 위 굵고 균일한 검정 윤곽과
+     교차 해칭으로 그린 손그림 인물 장면. 장소·잎·인물 칩은 쓰지 않고
+     장면 · 빛 · 움직임 · 비율만으로 조립합니다. */
+  const BOLD = {
+    imageEn(ctx) {
+      const light = LIGHTS[ctx.get("light").id];
+      const ratio = ctx.get("ratio");
+      const sceneEn = ctx.scene("en");
+
+      if (ctx.brief) {
+        return [
+          `Hand-drawn black-and-white ink illustration on plain white paper, ${ratio.en}.`,
+          `Thick even black contour lines (4–7 px), solid black masses, two-direction cross-hatching in the cloth and short parallel hatch in the shadows; everything else untouched white.`,
+          `${H.cap(sceneEn)}.`,
+          `Eye level, subject in the lower two thirds, high contrast, flat 2D, no colour, no grey tone, no text.`
+        ].join(" ");
+      }
+
+      return [
+        `A hand-drawn black-and-white ink illustration — a bold brush-pen drawing on plain white paper, with the weight of a printed comic panel or a woodcut. Not a photograph, not a digital painting, not a 3D render, not a pencil sketch.`,
+        `Canvas: plain white paper (#FFFFFF) filling the whole frame, ${ratio.en}. Even and clean: no paper texture, no grey wash, no vignette, no border, no frame, no page edge, no drop shadow.`,
+        `Ink: one black ink (#111111) and nothing else. Contours are thick, confident and of nearly even weight — 4 to 7 px at this scale — with the small rounded wobble of a line drawn by hand, never a perfect vector curve. Closing every shape so the drawing reads instantly, even from across the room.`,
+        `Shading: three tools only. First, solid black masses — the cap, the apron, the hair, the dark mouth of the oven. Second, cross-hatching in two directions for the folds of cloth and the roundness of a forearm. Third, short parallel hatch lines for the shadow under the cutting board and along the counter edge. Everything else stays untouched white. No mid-grey tone, no ink wash, no airbrush, no gradient, no stipple, no halftone dots.`,
+        `Scene: ${H.cap(sceneEn)}.`,
+        `Figures: the person is drawn at natural, sturdy proportions — never chibi — with a face built from a few decisive lines: heavy brows, a moustache or a firm mouth, one line for the nose, a dot and a crescent for the eyes looking down at the work. Hands are large and simple, with each finger a single stroke.`,
+        `Composition: eye level, close enough that the hands and the fish fill the middle of the frame; the subject occupies the lower two thirds and the upper third stays white or almost white. Objects sit on one clear ground line; nothing floats.`,
+        `Light: ${light.en}. In practice this means the strongest black goes where the light does not reach, and one long hatch shadow anchors the subject to the surface it stands on.`,
+        `Mood: warm, a little humorous, and full of the craft of the hands — the panel of a story where someone has done this work for thirty years.`,
+        `Output: one still illustration, ${ratio.en}, crisp black ink on clean white, flat matte, no texture overlay.`,
+        `Avoid: colour of any kind, grey tones, pencil or charcoal lines, watercolour, ink wash, etching-fine hatching over the entire surface, photo realism, 3D, CGI, anime eyes, chibi proportions, gradients, cast shadows in grey, halftone, paper grain, frames, and any lettering, caption, date, signature, watermark, logo or social handle anywhere in the image.`
+      ].join("\n\n");
+    },
+
+    imageKo(ctx) {
+      const light = LIGHTS[ctx.get("light").id];
+      const ratio = ctx.get("ratio");
+      const sceneKo = ctx.scene("ko");
+
+      if (ctx.brief) {
+        return [
+          `순백 종이 위에 굵은 검정 먹으로 그린 손그림 흑백 일러스트, ${ratio.ko}.`,
+          `4~7px 균일한 굵은 윤곽, 검은 면, 옷주름 교차 해칭과 그림자 짧은 평행획, 나머지는 순백.`,
+          `${sceneKo}.`,
+          `눈높이, 인물은 아래 2/3, 고대비, 평면 2D, 색·회색 톤·글자 없음.`
+        ].join(" ");
+      }
+
+      return [
+        `순백 종이 위에 굵은 붓펜으로 그린 흑백 먹 일러스트 — 인쇄된 만화 한 칸이나 목판화의 무게를 가진 손그림. 사진도, 디지털 페인팅도, 3D 렌더도, 연필 스케치도 아닙니다.`,
+        `캔버스: 순백 종이(#FFFFFF)가 화면 전체를 채웁니다. ${ratio.ko}. 고르고 깨끗하게 — 종이 질감 없음, 회색 번짐 없음, 비네팅 없음, 테두리·액자·페이지 가장자리·드롭섀도 없음.`,
+        `먹: 한 가지 검정(#111111)뿐입니다. 윤곽은 굵고 자신 있으며 굵기가 거의 변하지 않는 4~7px — 손으로 그은 선의 작고 둥근 떨림은 있되, 완벽한 벡터 곡선은 아닙니다. 모든 형태가 닫혀 있어 멀리서도 한눈에 읽힙니다.`,
+        `명암: 세 가지 도구만 씁니다. 첫째, 검은 면 — 모자, 앞치마, 머리카락, 화덕의 어두운 아궁이. 둘째, 옷주름과 팔뚝의 둥근 면을 위한 두 방향 교차 해칭. 셋째, 도마 아래와 카운터 가장자리 그림자를 위한 짧은 평행획. 나머지는 손대지 않은 흰색으로 남깁니다. 중간 회색 톤, 먹 번짐, 에어브러시, 그라데이션, 점묘, 하프톤 점 모두 없습니다.`,
+        `장면: ${sceneKo}.`,
+        `인물: 자연스럽고 다부진 비례 — 절대 치비가 아닙니다. 얼굴은 몇 개의 단호한 선으로 만듭니다: 두꺼운 눈썹, 콧수염이나 굳은 입, 코는 선 하나, 눈은 일하는 손끝을 내려다보는 점과 초승달 하나. 손은 크고 단순하게, 손가락마다 획 하나씩.`,
+        `구도: 눈높이, 손과 생선이 화면 가운데를 채울 만큼 가까이. 인물은 아래 2/3를 차지하고 위 1/3은 흰색이거나 거의 흰색입니다. 물건은 하나의 분명한 지면선 위에 놓이고, 떠 있는 것은 없습니다.`,
+        `빛: ${light.ko}. 실제로는 빛이 닿지 않는 곳에 가장 진한 검정이 들어가고, 긴 해칭 그림자 하나가 인물을 딛고 선 면에 고정시킵니다.`,
+        `분위기: 따뜻하고 조금 익살스러우며 손의 솜씨가 가득한 — 이 일을 삼십 년 해 온 사람의 이야기 한 칸.`,
+        `출력: 정지 일러스트 한 장, ${ratio.ko}, 순백 위의 또렷한 검정 먹, 평면 무광, 질감 오버레이 없음.`,
+        `금지: 어떤 색이든, 회색 톤, 연필·목탄선, 수채, 먹 번짐, 화면 전체를 덮는 판화식 잔해칭, 사실적 사진, 3D, CGI, 애니메이션 눈, 치비 비례, 그라데이션, 회색으로 드리운 그림자, 하프톤, 종이 그레인, 액자, 그리고 화면 어디에도 글자·캡션·날짜·서명·워터마크·로고·@계정명.`
+      ].join("\n\n");
+    },
+
+    motionEn(ctx) {
+      const motion = ctx.get("motion");
+      const ratio = ctx.get("ratio");
+      const still = motion.id === "still";
+
+      if (ctx.brief) {
+        return [
+          `${ratio.en}, 6-second seamless loop at 24 fps, camera locked: the same bold black-ink drawing animated in flat 2D.`,
+          still ? `Almost nothing moves; the frame holds like a printed panel.` : `The knife hand completes one slow stroke and a thin ribbon of smoke curls out of the oven mouth.`,
+          `Ink lines, black masses and white paper never boil or flicker. First and last frame identical. No text, no watermark.`
+        ].join(" ");
+      }
+
+      return [
+        `Animate the bold ink drawing into a 6-second seamless loop at 24 fps — flat 2D line animation on clean white paper, never a 3D move and never a morph.`,
+        `Camera: completely locked. No pan, no tilt, no zoom, no push-in, no parallax, no handheld shake, no focus change. The frame keeps the same crop from the first second to the last.`,
+        still
+          ? `Movement: the drawing holds like a printed panel. At most the ink breathes by half a pixel, and one thin ribbon of smoke from the oven mouth drifts upward and thins out over the six seconds.`
+          : `Movement: one single, unhurried knife stroke — the blade travels forward two centimetres and stops, the wrist and forearm following on a two-frame delay — while one thin ribbon of smoke from the oven mouth curls upward and thins out. Nothing else in the scene moves.`,
+        `Line behaviour: the contour lines do not boil, thicken, thin or wiggle. The cross-hatching stays exactly where it is drawn, and the solid black masses keep their edges sharp; no line redraws itself, no new line appears.`,
+        `White paper: the background stays exactly #FFFFFF in every frame, so the picture never looks lit or graded. No shadows move, no vignette grows.`,
+        `Loop: the action is timed so the last frame is identical to the first and the cut is invisible. No fade, no title card, no sound.`,
+        `Guardrails: no 3D, no camera move, no morphing the drawing into a photograph, no colour, no added characters or objects, no text.`
+      ].filter(Boolean).join("\n\n");
+    },
+
+    motionKo(ctx) {
+      const motion = ctx.get("motion");
+      const ratio = ctx.get("ratio");
+      const still = motion.id === "still";
+
+      if (ctx.brief) {
+        return [
+          `${ratio.ko}, 6초 무한 반복, 24fps, 카메라 고정: 같은 굵은 먹선 그림을 평면 2D로.`,
+          still ? `거의 움직이지 않고 인쇄된 한 칸처럼 멈춰 있습니다.` : `칼을 쥔 손이 느린 획 한 번을 마치고, 화덕 아궁이에서 가느다란 연기 한 줄이 올라옵니다.`,
+          `먹선·검은 면·흰 종이는 끓거나 깜빡이지 않습니다. 첫 프레임과 마지막 프레임 동일. 글자·워터마크 없음.`
+        ].join(" ");
+      }
+
+      return [
+        `굵은 먹선 그림을 6초 무한 반복 영상으로 만듭니다. 24fps, 깨끗한 흰 종이 위 평면 2D 선 애니메이션이며, 3D 이동도 모핑도 아닙니다.`,
+        `카메라: 완전 고정. 팬·틸트·줌·푸시인·시차·핸드헬드 흔들림·포커스 변화 없음. 첫 초와 마지막 초의 화면 자르기가 정확히 같습니다.`,
+        still
+          ? `움직임: 인쇄된 한 칸처럼 그림이 멈춰 있습니다. 기껏해야 먹이 반 픽셀 숨 쉬는 정도이고, 화덕 아궁이에서 가느다란 연기 한 줄이 6초 동안 위로 흐르며 옅어집니다.`
+          : `움직임: 서두르지 않는 칼 획 한 번 — 칼날이 앞으로 2cm 나아갔다 멈추고, 손목과 팔뚝이 두 프레임 늦게 따라옵니다. 그동안 화덕 아궁이에서 가느다란 연기 한 줄이 말려 올라가 옅어집니다. 장면의 다른 것은 움직이지 않습니다.`,
+        `선의 성질: 윤곽선은 끓지도, 굵어지지도, 가늘어지지도, 흔들리지도 않습니다. 교차 해칭은 그려진 자리에 그대로 있고 검은 면의 가장자리는 또렷합니다. 선이 스스로 다시 그려지거나 새 선이 생기지 않습니다.`,
+        `흰 종이: 배경은 모든 프레임에서 정확히 #FFFFFF — 조명이 비치거나 색이 보정된 느낌이 없습니다. 그림자가 움직이지 않고 비네팅이 자라지도 않습니다.`,
+        `루프: 마지막 프레임이 첫 프레임과 같도록 동작을 맞춰 끊김이 보이지 않습니다. 페이드·타이틀 카드·소리는 없습니다.`,
+        `가드레일: 3D·카메라 이동·그림이 사진으로 변하는 모핑·색·인물·소품 추가·글자를 금지합니다.`
+      ].filter(Boolean).join("\n\n");
+    }
+  };
 
   MPS.register({
     id: "zen",
@@ -372,11 +505,11 @@
     controls: [
       { key: "scene", type: "text", label: "장면 직접 입력", placeholder: "예: 눈 그친 오후, 담장 아래에서 강아지가 잎을 밟고 걷는다",
         hint: "비우면 위에서 고른 프리셋의 장면을 씁니다" },
-      { key: "place", type: "chips", label: "장소 · 구조물", options: Object.entries(PLACES).map(([id, v]) => ({ id, label: v.label })) },
-      { key: "foliage", type: "swatch", label: "잎 · 계절색", options: Object.entries(FOLIAGE).map(([id, v]) => ({ id, label: v.label, hex: v.hex })) },
-      { key: "figures", type: "chips", label: "인물", options: Object.entries(FIGURES).map(([id, v]) => ({ id, label: v.label })) },
+      { key: "place", type: "chips", label: "장소 · 구조물", hideIn: ["craft-kitchen"], options: Object.entries(PLACES).map(([id, v]) => ({ id, label: v.label })) },
+      { key: "foliage", type: "swatch", label: "잎 · 계절색", hideIn: ["craft-kitchen"], options: Object.entries(FOLIAGE).map(([id, v]) => ({ id, label: v.label, hex: v.hex })) },
+      { key: "figures", type: "chips", label: "인물", hideIn: ["craft-kitchen"], options: Object.entries(FIGURES).map(([id, v]) => ({ id, label: v.label })) },
       { key: "motion", type: "chips", label: "영상 움직임", options: Object.entries(MOTIONS).map(([id, v]) => ({ id, ...v })) },
-      { key: "air", type: "chips", label: "떨어지는 잎", options: Object.entries(AIRS).map(([id, v]) => ({ id, label: v.label })) },
+      { key: "air", type: "chips", label: "떨어지는 잎", hideIn: ["craft-kitchen"], options: Object.entries(AIRS).map(([id, v]) => ({ id, label: v.label })) },
       { key: "light", type: "chips", label: "빛", options: Object.entries(LIGHTS).map(([id, v]) => ({ id, label: v.label })) },
       { key: "ratio", type: "chips", label: "화면 비율", options: MPS.RATIOS }
     ],
@@ -404,6 +537,8 @@
         preset: "snow-hanok", seed: { place: "hanok", foliage: "snow", figures: "family", motion: "walk", air: "many", light: "snowlight", ratio: "9:16" } },
       { file: "zen/green-campus.jpg", title: "여름 캠퍼스 가로수길", caption: "그늘의 길이가 여름의 길이다.", pos: "center 58%",
         preset: "green-campus", seed: { place: "campus", foliage: "green", figures: "solo", motion: "walk", air: "some", light: "afternoon", ratio: "9:16" } },
+      { file: "zen/kitchen-craft.jpg", title: "굵은 먹붓 · 생선 손질", caption: "손끝에서 저녁이 준비된다.", pos: "center 40%",
+        preset: "craft-kitchen", seed: { motion: "still", light: "overcast", ratio: "4:5" } },
       { file: "zen/courtyard-dusk.jpg", title: "해 질 무렵의 빈 마당", caption: "해가 지면 선만 남는다.", pos: "center 60%",
         preset: "courtyard-dusk", seed: { place: "courtyard", foliage: "bare", figures: "none", motion: "still", air: "some", light: "dusk", ratio: "4:5" } }
     ],
@@ -411,6 +546,7 @@
     /* ---------------- 프롬프트 빌더 ---------------- */
     build: {
       imageEn(ctx) {
+        if (ctx.preset.bold) return BOLD.imageEn(ctx);
         const place = PLACES[ctx.get("place").id];
         const fol = FOLIAGE[ctx.get("foliage").id];
         const fig = FIGURES[ctx.get("figures").id];
@@ -458,6 +594,7 @@
       },
 
       imageKo(ctx) {
+        if (ctx.preset.bold) return BOLD.imageKo(ctx);
         const place = PLACES[ctx.get("place").id];
         const fol = FOLIAGE[ctx.get("foliage").id];
         const fig = FIGURES[ctx.get("figures").id];
@@ -505,6 +642,7 @@
       },
 
       motionEn(ctx) {
+        if (ctx.preset.bold) return BOLD.motionEn(ctx);
         const place = PLACES[ctx.get("place").id];
         const fol = FOLIAGE[ctx.get("foliage").id];
         const fig = FIGURES[ctx.get("figures").id];
@@ -550,6 +688,7 @@
       },
 
       motionKo(ctx) {
+        if (ctx.preset.bold) return BOLD.motionKo(ctx);
         const place = PLACES[ctx.get("place").id];
         const fol = FOLIAGE[ctx.get("foliage").id];
         const fig = FIGURES[ctx.get("figures").id];
