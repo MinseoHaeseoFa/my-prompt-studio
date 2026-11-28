@@ -338,6 +338,8 @@
     const bits = [];
     style.controls.forEach((spec) => {
       if (spec.type === "text" || spec.type === "caption") return;
+      /* 이 프리셋에서 숨긴 칩(hideIn)은 결과 요약에도 넣지 않습니다 */
+      if (spec.hideIn && spec.hideIn.includes(ss.presetId)) return;
       const val = ss.c[spec.key];
       if (spec.multi) {
         (val || []).forEach((id) => {
