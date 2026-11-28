@@ -339,13 +339,37 @@
     },
   ];
 
+  /* 굵은 먹붓 변형 전용 빛 — 종이 색을 말하지 않고 대비만 말합니다 */
+  const BOLD_LIGHTS = {
+    afternoon: {
+      en: "clear afternoon light, high contrast held by the ink alone, shadows crisp and whites left pure",
+      ko: "맑은 오후 빛, 대비는 오직 먹이 만듭니다 — 그림자는 또렷하고 흰 곳은 순백"
+    },
+    morning: {
+      en: "early morning light, a cool crisp contrast with sharp-edged shadows and clean white paper",
+      ko: "이른 아침 빛, 서늘하고 또렷한 대비, 날카로운 그림자와 깨끗한 흰 종이"
+    },
+    dusk: {
+      en: "late dusk, contrast pulled a little lower, the hatch shadows wide and soft while the whites stay clean",
+      ko: "해 질 무렵, 대비를 조금 낮춰 해칭 그림자는 넓고 부드럽게, 흰 곳은 깨끗하게"
+    },
+    overcast: {
+      en: "flat overcast light where the ink alone carries the contrast — no graded shadow, no grey tone",
+      ko: "평평한 흐린 빛, 대비를 먹이 혼자 떠받칩니다 — 농담진 그림자도 회색 톤도 없이"
+    },
+    snowlight: {
+      en: "snow light, cold and clean, the darker masses reading almost black against pure white",
+      ko: "눈 내리는 빛, 차갑고 깨끗하게, 짙은 덩어리가 순백 위에서 거의 검정으로 읽히는"
+    }
+  };
+
   /* ---------- 굵은 먹붓 변형 (bold: true 프리셋 전용) ----------
      가는 먹선 · 아이보리 종이 대신, 순백 종이 위 굵고 균일한 검정 윤곽과
      교차 해칭으로 그린 손그림 인물 장면. 장소·잎·인물 칩은 쓰지 않고
      장면 · 빛 · 움직임 · 비율만으로 조립합니다. */
   const BOLD = {
     imageEn(ctx) {
-      const light = LIGHTS[ctx.get("light").id];
+      const light = BOLD_LIGHTS[ctx.get("light").id] || BOLD_LIGHTS.overcast;
       const ratio = ctx.get("ratio");
       const sceneEn = ctx.scene("en");
 
@@ -374,7 +398,7 @@
     },
 
     imageKo(ctx) {
-      const light = LIGHTS[ctx.get("light").id];
+      const light = BOLD_LIGHTS[ctx.get("light").id] || BOLD_LIGHTS.overcast;
       const ratio = ctx.get("ratio");
       const sceneKo = ctx.scene("ko");
 
